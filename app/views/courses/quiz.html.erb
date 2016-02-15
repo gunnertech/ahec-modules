@@ -1,0 +1,24 @@
+<p id="notice"><%= notice %></p>
+
+<% if current_user.isEligibleToTakeTest?(@course) %>
+  <h1>Quiz on "<%= @course.title %>"</h1>
+
+  <%= form_tag(quiz_course_path(@course)) %>
+    <!-- Generate a Quiz -->
+    <% JSON.parse(@course.question_json)["questions"].each_with_index do |question, questionIndex| %>
+      <fieldset id="question-<%= questionIndex %>">
+        <legend><%= question["title"] %></legend>
+        <% question["choices"].each_with_index do |choice, choiceIndex| %>
+          <input type="radio" name="question-<%= questionIndex %>" value="<%= choiceIndex %>">
+            <%= choice %>
+          </input>
+        <% end %>
+      </fieldset>
+    <% end %>
+
+    <!-- Submit -->
+    <button>Submit</button>
+  </form>
+<% else %>
+  <h1>Sorry, but you are not authorized to take this test.</h1>
+<% end %>

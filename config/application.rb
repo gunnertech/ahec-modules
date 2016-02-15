@@ -6,6 +6,17 @@ require 'rails/all'
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
 
+module JSON
+  def self.is_json?(foo)
+    begin
+      return false unless foo.is_a?(String)
+      JSON.parse(foo).all?
+    rescue JSON::ParserError
+      false
+    end 
+  end
+end
+
 module Ahecmodules
   class Application < Rails::Application
     # Settings in config/environments/* take precedence over those specified here.

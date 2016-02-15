@@ -1,0 +1,14 @@
+<% if @course.errors.any? %>
+  <div id="error_explanation">
+    <h1><%= pluralize(@course.errors.count, "error") %> prohibited your from registrating!</h1>
+
+    <ul>
+    <% @course.errors.full_messages.each do |message| %>
+      <li><%= message %></li>
+    <% end %>
+    </ul>
+  </div>
+<% else %>
+  <p>You have been successfully registered! An admin must approve you within the next couple of business days before you may obtain course access.</p>
+<% end %>
+<%= link_to 'Back to courses', courses_path %>

@@ -9,23 +9,22 @@
   <body>
     <%= nav_bar fixed: :top, brand: "AHEC Modules", responsive: true do %>
       <%= menu_group do %>
-        <%= menu_item "Home", root_path %>
-        <%= menu_divider %>
-        <%= drop_down "Dropdown" do %>
-          <%= menu_item "Menu Item", "/" %>
-          <%= menu_item "Menu Item", "/asdf" %>
-          <%= menu_item "Menu Item", "/asdfasdf" %>
-          <%= menu_item "Menu Item", "/asdfasdfasdf" %>
-          <%= menu_item "Menu Item", "/asdfasdfasdfasdf" %>
+        <% if current_user %>
+          <%= menu_item "Courses", courses_path %>
+          <%= menu_divider %>
+
+          <% if current_user.admin %>
+            <%= drop_down "Admin Actions" do %>
+              <%= menu_item "Course Join Requests", admin_join_requests_path %>
+              <%= menu_item "Certificates", admin_certificates_path %>
+            <% end %>
+          <% end %>
         <% end %>
       <% end %>
+
       <%= menu_group pull: :right do %>
         <% if current_user %>
           <%= menu_item "Logout", destroy_user_session_path, method: :delete %>
-        <% else %>
-          <%= form_for User.new, url: session_path(:user), html: {class: "navbar-form pull-right"} do |f| -%>
-            <%= f.text_field :email %> <%= f.password_field :password %> <%= f.submit "Sign In", class: "btn" %> <%= link_to("Register", new_user_registration_path, class: "btn btn-primary") %>
-          <% end -%>
         <% end %>
       <% end %>
     <% end %>
@@ -34,5 +33,16 @@
     <p class="alert"><%= alert %></p>
     
     <%= yield %>
+
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-73802509-1', 'auto');
+      ga('send', 'pageview');
+
+    </script>
   </body>
 </html>

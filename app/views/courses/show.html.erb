@@ -1,0 +1,36 @@
+<p id="notice"><%= notice %></p>
+
+<h1><%= @course.title %></h1>
+
+<div id="player"></div>
+
+<% if current_user.isEligibleToTakeTest?(@course) %>
+  <script src="https://www.youtube.com/iframe_api"></script>
+  <script>
+    var videoId = '<%= @course.video_url %>'
+  </script>
+<% end %>
+
+<p>
+  <% if @course.description == '' %>
+    No Description
+  <% else %>
+    <%= @course.description %>
+  <% end %>
+</p>
+
+<% if not current_user.admin %>
+  <% if current_user.isRegisteredFor?(@course) %>
+    <% if current_user.isEligibleToTakeTest?(@course) %>
+      <%= link_to 'Take Quiz', quiz_course_path(@course) %>
+    <% end %>
+  <% else %>
+    <%= link_to 'Register', register_course_path(@course), method: :post %>
+    </form>
+  <% end %>
+<% end %>
+
+<% if current_user.admin %>
+  <%= link_to 'Edit', edit_course_path(@course) %> |
+  <%= link_to 'Back', courses_path %>
+<% end %>
