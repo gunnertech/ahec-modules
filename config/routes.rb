@@ -15,8 +15,8 @@ Rails.application.routes.draw do
 
   resources :courses do
     member do
+      post '/quiz', to: 'courses#grade_quiz'
       get :quiz
-      post :quiz
 
       get '/quiz/results', to: 'courses#results'
 

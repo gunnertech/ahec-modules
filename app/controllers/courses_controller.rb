@@ -74,11 +74,15 @@ class CoursesController < ApplicationController
       end
     end
 
-    score = ((totalCorrect / correctAnswers.count) * 100).round
+    puts totalCorrect
+    puts correctAnswers
 
+    score = ((totalCorrect / correctAnswers.count) * 100).round
+    puts score
     membership = current_user.getMembershipFor(@course)
-    redirect_to result_quiz_course_path
     membership.setQuizResult(score)
+
+    redirect_to quiz_results_course_path
   end
 
   # GET /courses/1/quiz/results
