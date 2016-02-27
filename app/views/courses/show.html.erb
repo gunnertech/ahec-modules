@@ -4,11 +4,11 @@
 
 <div id="player"></div>
 
-<% if current_user.isEligibleToTakeTest?(@course) %>
   <script src="https://www.youtube.com/iframe_api"></script>
   <script>
     var videoId = '<%= @course.video_url %>'
   </script>
+<% if current_user.isEligibleToTakeTest?(@course) %>
 <% end %>
 
 <p>
