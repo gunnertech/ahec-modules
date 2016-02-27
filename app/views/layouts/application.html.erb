@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>AHEC Modules</title>
+    <title>Continuing Health Education On-line Modules</title>
     <%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true %>
     <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
     <%= csrf_meta_tags %>
   </head>
   <body>
-    <%= nav_bar fixed: :top, brand: "AHEC Modules", responsive: true do %>
+    <%= nav_bar fixed: :top, brand: "Continuing Health Education On-line Modules", responsive: true do %>
       <%= menu_group do %>
         <% if current_user %>
           <%= menu_item "Courses", courses_path %>
