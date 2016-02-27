@@ -12,7 +12,8 @@ class UserMembership < ActiveRecord::Base
   end
 
   def hasUserBeenAcceptedIntoCourse?
-    return self.admin_approved
+    return true
+    #return self.admin_approved
   end
 
   def canUserRetakeCourse?
