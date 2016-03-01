@@ -22,16 +22,14 @@ class User < ActiveRecord::Base
   end
 
   def isRegisteredFor?(course)
-    return true
-    #return self.courses.exists?(course.id)
+    return self.courses.exists?(course.id)
   end
 
   def isEligibleToTakeTest?(course)
     membership = self.getMembershipFor(course)
 
     if not membership
-      #return false
-      self.registerFor(course)
+      return false
     end
 
     if not membership.hasUserBeenAcceptedIntoCourse?
