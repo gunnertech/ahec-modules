@@ -1,6 +1,10 @@
 <% if current_user.getMembershipFor(@course).didUserPassCourse? %>
-  <h1>Congratulations! You have passed the course - your certificate will be sent to you shortly.</h1>
+  <h1 class="text-center">Congratulations! You have passed the course - your certificate will be sent to you shortly.</h1>
 <% else %>
-  <h1>We are sorry, you didn't pass - remember you have 3 test attempts!</h1>
+  <h1 class="text-center">We are sorry, you didn't pass - remember you have 3 test attempts!</h1>
   <iframe src="https://docs.google.com/forms/d/16pzykdHpGsXUSUnaidRiWOZ7huXkjBrHIdVCt0Gync8/viewform?embedded=true" width="760" height="500" frameborder="0" marginheight="0" marginwidth="0">Loading...</iframe>
 <% end %>
+
+<div class="text-center">
+  <%= link_to 'Back', courses_path, class: 'btn btn-primary'%>
+</div>

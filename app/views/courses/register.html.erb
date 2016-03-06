@@ -1,21 +1,19 @@
-<div class="courses-index">
-  <% if @course.errors.any? %>
-    <div id="error_explanation">
-      <h1>
-        <%= pluralize(@course.errors.count, "error") %> prohibited your from registrating!
-      </h1>
+<% if @course.errors.any? %>
+  <div id="error_explanation">
+    <h1>
+      <%= pluralize(@course.errors.count, "error") %> prohibited your from registrating!
+    </h1>
 
-      <ul>
-        <% @course.errors.full_messages.each do |message| %>
-          <li><%= message %></li>
-        <% end %>
-      </ul>
-    </div>
-  <% else %>
-    <h1 class="text-center">You have been successfully registered!</h1>
-  <% end %>
-
-  <div class="text-center">
-    <%= link_to 'Back to courses', courses_path, class: 'btn btn-primary' %>
+    <ul>
+      <% @course.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+    </ul>
   </div>
+<% else %>
+  <h1 class="text-center">You have been successfully registered!</h1>
+<% end %>
+
+<div class="text-center">
+  <%= link_to 'Back to courses', courses_path, class: 'btn btn-primary' %>
 </div>
