@@ -39,10 +39,12 @@
       <%= f.text_field :address, class: "form-control edit-user-decluster" %>
     </div>
 
-    <div class="field">
+    <div class="field edit-user-decluster">
       <%= f.label :profession %><br />
-      <%= f.text_field :profession, class: "form-control edit-user-decluster" %>
+      <% professions_array = ["", "Pharmacist", "Physician", "Physician Assistant", "Registered Nurse", "Respiratory", "Social Worker", "Other"] %>
+      <%= f.select :profession, options_for_select(professions_array, 0) %>
     </div>
+
 
     <div class="field">
       <%= f.label :city %><br />
