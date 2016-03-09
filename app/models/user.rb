@@ -48,7 +48,7 @@ class User < ActiveRecord::Base
   end
   
   def registerFor(course)
-    UserMembership.where(:course => course).first_or_create(user_id: self.id, course_id: course.id)
+    UserMembership.where(:user => self, :course => course).first_or_create(user_id: self.id, course_id: course.id)
   end
 
   def getMembershipFor(course)
