@@ -7,6 +7,7 @@ Rails.application.routes.draw do
     get '/join_requests', to: 'dashboard#join_requests'
     post '/join_requests/approve', to: 'dashboard#approve_member'
     get '/certificates', to: 'dashboard#display_passed_users'
+    get '/demographics', to: 'dashboard#demographics'
   end
 
   namespace :admin do

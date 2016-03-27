@@ -7,16 +7,21 @@
 // - Commentify
 // - Select radio of correct answer in deserialization
 
+function getYoutubeIdFromUrl(url){
+  var regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#\&\?]*).*/;
+  var match = url.match(regExp);
+  return (match&&match[7].length==11)? match[7] : url;
+}
 
 var questionRollover = 0;
 function addQuestion() {
   questionRollover += 1;
 
   var newQuestion = "<fieldset id=\"question-new-" + questionRollover + "\">";
-  newQuestion += "<input type=\"button\" value=\"Delete\" " +
+  newQuestion += "<input type=\"text\"/>";
+  newQuestion += "<input class=\"btn pull-right btn-danger\" type=\"button\" value=\"Delete Question\" " +
     "onclick=\"deleteQuestion(" + questionRollover + ", true);\"/>";
-  newQuestion += "<legend><input type=\"text\"/></legend>";
-  newQuestion += "<input id=\"question-new-" + questionRollover + "-add-choice-button\" type=\"button\" value=\"Add Choice\" " +
+  newQuestion += "<input class=\"btn btn-primary\" id=\"question-new-" + questionRollover + "-add-choice-button\" type=\"button\" value=\"Add Choice\" " +
         "onclick=\"addChoice(" + questionRollover + ", true);\"/>";
   newQuestion += "</fieldset>";
 
@@ -31,7 +36,7 @@ function addChoice(questionNumber, isNew) {
   newChoiceDiv += "<div id=\"question-" + questionNumber + "-choice-new-" + choiceRollover + "\">";
   newChoiceDiv += "<input name=\"" + questionNumber + "\" type=\"radio\"/>";
   newChoiceDiv += "<input type=\"text\"/>";
-  newChoiceDiv += "<input type=\"button\" value=\"Delete\" " +
+  newChoiceDiv += "<input class=\"btn btn-danger\" type=\"button\" value=\"Delete Choice\" " +
     "onclick=\"deleteChoice(" + questionNumber + ", " + choiceRollover + ", true);\"/>";
   newChoiceDiv += "<br /></div>";
 
@@ -69,6 +74,7 @@ $(function() {
     // Deserialize existing questions and display them - also set view up
     var jsonString = jsonField.val() || '{\"questions\": []}';
     var json = JSON.parse(jsonString);
+    console.log(jsonString);
 
     // For each existing question
     for (var i = 0; i < json["questions"].length; i++) {
@@ -76,23 +82,23 @@ $(function() {
 
       // Beginning of Question Div (fieldset) + Title
       var newElement = "<fieldset id=\"question-" + i + "\">";
-          newElement += "<input type=\"button\" value=\"Delete\" " +
+          newElement += "<input type=\"text\" value=\"" + question.title + "\"/>";
+          newElement += "<input class=\"pull-right btn btn-danger\" type=\"button\" value=\"Delete Question\" " +
                           "onclick=\"deleteQuestion(" + i + ");\"/>";
-          newElement += "<legend><input type=\"text\" value=\"" + question.title + "\"/></legend>";
 
       // Each Choice of the Question
       for (var j = 0; j < question.choices.length; j++) {
         newElement += "<div id=\"question-" + i + "-choice-" + j + "\">";
           newElement += "<input name=\"" + i + "\" type=\"radio\"/>";
           newElement += "<input type=\"text\" value=\"" + question.choices[j] + "\"/>";
-          newElement += "<input type=\"button\" value=\"Delete\" " +
+          newElement += "<input class=\"btn btn-danger\" type=\"button\" value=\"Delete Choice\" " +
                           "onclick=\"deleteChoice(" + i + ", " + j + ");\"/>";
           newElement += "<br />";
         newElement += "</div>";
       }
 
       // The Add Choice Button and End of the Question HTML
-        newElement += "<input id=\"question-" + i + "-add-choice-button\" " +
+        newElement += "<input id=\"question-" + i + "-add-choice-button\" class=\"btn btn-primary\"" +
                        "type=\"button\" value=\"Add Choice\" " +
                        "onclick=\"addChoice(" + i + ");\"/>";
       newElement += "</fieldset>";
@@ -101,9 +107,24 @@ $(function() {
       editor.append(newElement);
     }
 
+    // Check the correct answer
+    for (var question = 0; question < json["answers"].length; question++) {
+      var choice = json["answers"][question];
+      var domId = "#question-" + question + "-choice-" + choice;
+
+      $(domId).children("input:radio").prop("checked", true);
+    }
+
     // Submit Hook
     var submitFormCb = function(e) {
-      console.log("Called");
+      // Handle striping of the Youtube IDs
+      $("#youtube-ids").children("div").each(function(i, domObj) {
+        $(domObj).children("input:text").each(function(i, domObj) {
+          $(domObj).val(getYoutubeIdFromUrl($(domObj).val()));
+        });
+      });
+
+      // Now the serialization on Questions
       var json = {
         questions: [],
         answers: []
@@ -119,11 +140,11 @@ $(function() {
 
 
         // Only care about the question divs data - not the buttons
-        if (RegExp('^question-(new-*)(\\d+)$').test(elementId)) {
+        if (RegExp('^question-(new-)*(\\d+)$').test(elementId)) {
           // Data from the question DOM element - iterate over children of div
           thisElement.children().each(function(childOfDivIndex, domObj) {
             var questionDomObj = $(this);
-            var isQChoice = RegExp('^question-(\\d+)-choice-(new-*)(\\d+)$')
+            var isQChoice = RegExp('^question-(\\d+)-choice-(new-)*(\\d+)$')
 
             // This child element is a multiple choice option
             if (isQChoice.test(questionDomObj.attr('id'))) {
@@ -143,9 +164,8 @@ $(function() {
               });
             }
             // This is the title of the Question
-            else if (questionDomObj.is("legend") &&  
-                questionDomObj.children(":text").length > 0) {
-              question.title = questionDomObj.children(":text").val();
+            else if (questionDomObj.is("input:text")) {
+              question.title = questionDomObj.val();
             }
           });
 
@@ -156,7 +176,6 @@ $(function() {
 
       // Set the textfield to have the generated JSON and let the server save it
       jsonField.val(JSON.stringify(json));
-      console.log(json);
     };
 
     $("form").submit(submitFormCb);

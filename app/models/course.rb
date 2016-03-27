@@ -4,8 +4,13 @@ class Course < ActiveRecord::Base
   validate :json_format
   validate :valid_youtube_video
 
+  has_many :youtube_video_ids
   has_many :user_memberships
   has_many :users, :through => :user_memberships
+
+  accepts_nested_attributes_for :youtube_video_ids,
+    :allow_destroy => true,
+    :reject_if     => :all_blank
 
   protected
   def json_format

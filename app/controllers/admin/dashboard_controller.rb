@@ -9,6 +9,10 @@ class Admin::DashboardController < ApplicationController
     @courses = @memberships.map { |m| m.course }.uniq { |c| c.id }
   end
 
+  def demographics
+    @memberships = UserMembership.all
+  end
+
   def approve_member
     if params[:id]
       membership = UserMembership.find_by_id(params[:id])

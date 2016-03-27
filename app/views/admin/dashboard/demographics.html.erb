@@ -1,10 +1,6 @@
-<% if @courses.empty? %>
-  <h1>No Course Requests</h1>
-<% end %>
-
-<% @courses.each do |course| %>
+<% @memberships.each do |membership| %>
   <table class="table table-striped">
-    <caption>Course Title: <%= link_to course.title, course %></caption>
+    <caption>Course Title: <%= link_to membership.title, course %></caption>
     <thead>
       <th>Name</th>
       <th>Email</th>
@@ -12,13 +8,12 @@
       <th>Address</th>
     </thead>
     <tbody>
-      <% @memberships.where(course_id: course.id).each do |request| %>
+      <% @memberships.select { |m| m.course_id == course.id }.each do |request| %>
         <tr>
           <td><%= request.user.getDisplayName %></td>
           <td><%= request.user.email %></td>
           <td><%= request.user.profession %></td>
           <td><%= request.user.address %></td>
-          <td><%= button_to "Accept", { :controller => 'dashboard', :id => request.id, :action => 'approve_member'}, :class => "btn btn-primary", :method => :post %></td>
         </tr>
       <% end %>
     </tbody>

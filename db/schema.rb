@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160227055152) do
+ActiveRecord::Schema.define(version: 20160325235923) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -21,7 +21,6 @@ ActiveRecord::Schema.define(version: 20160227055152) do
     t.datetime "updated_at",    null: false
     t.text     "title"
     t.text     "description"
-    t.text     "video_url"
     t.text     "question_json"
     t.integer  "minimum_score"
   end
@@ -68,4 +67,14 @@ ActiveRecord::Schema.define(version: 20160227055152) do
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
+  create_table "youtube_video_ids", force: :cascade do |t|
+    t.string   "video_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer  "course_id"
+  end
+
+  add_index "youtube_video_ids", ["course_id"], name: "index_youtube_video_ids_on_course_id", using: :btree
+
+  add_foreign_key "youtube_video_ids", "courses"
 end

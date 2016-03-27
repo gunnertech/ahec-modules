@@ -3,23 +3,24 @@
 <% end %>
 
 <% @courses.each do |course| %>
-  <table>
-    <caption><%= link_to course.title, course %></caption>
-    <tr>
+  <table class="table table-striped">
+    <caption>Course Title: <%= link_to course.title, course %></caption>
+    <thead>
       <th>Name</th>
       <th>Email</th>
       <th>Profession</th>
       <th>Address</th>
+    </thead>
+    <tbody>
+      <% @memberships.select { |m| m.course_id == course.id }.each do |request| %>
+        <tr>
+          <td><%= request.user.getDisplayName %></td>
+          <td><%= request.user.email %></td>
+          <td><%= request.user.profession %></td>
+          <td><%= request.user.address %></td>
+        </tr>
+      <% end %>
     </tbody>
-    </tr>
-    <% @memberships.select { |m| m.course_id == course.id }.each do |request| %>
-      <tr>
-        <td><%= request.user.getDisplayName %></td>
-        <td><%= request.user.email %></td>
-        <td><%= request.user.profession %></td>
-        <td><%= request.user.address %></td>
-      </td>
-    <% end %>
   </table>
 <% end %>
 
