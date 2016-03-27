@@ -9,8 +9,18 @@ class Admin::DashboardController < ApplicationController
     @courses = @memberships.map { |m| m.course }.uniq { |c| c.id }
   end
 
+  # WARNING: this is slow so...
+  # TODO: Optimize
   def demographics
-    @memberships = UserMembership.all
+    # Users who have had the maximum 3 attempts of the quiz OR Passed
+    @memberships = UserMembership.all.map { |membership|
+      if membership.didUserPassCourse? || 
+         membership.course_attempts == 3
+        membership
+      end
+    }.uniq { |m| m.id }
+
+    @courses = @memberships.map { |m| m.course }.uniq { |c| c.id }
   end
 
   def approve_member
