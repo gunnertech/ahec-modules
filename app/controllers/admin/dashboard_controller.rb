@@ -18,9 +18,9 @@ class Admin::DashboardController < ApplicationController
          membership.course_attempts == 3
         membership
       end
-    }.uniq { |m| m.id }
+    }.compact.uniq { |m| m.id }
 
-    @courses = @memberships.map { |m| m.course }.uniq { |c| c.id } || []
+    @courses = @memberships.map { |m| m.course }.compact.uniq { |c| c.id }
   end
 
   def approve_member
