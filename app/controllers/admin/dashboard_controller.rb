@@ -20,7 +20,7 @@ class Admin::DashboardController < ApplicationController
       end
     }.uniq { |m| m.id }
 
-    @courses = @memberships.map { |m| m.course }.uniq { |c| c.id }
+    @courses = @memberships.map { |m| m.course }.uniq { |c| c.id } || []
   end
 
   def approve_member

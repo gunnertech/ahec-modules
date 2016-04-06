@@ -42,7 +42,7 @@
     <div class="field edit-user-decluster">
       <%= f.label :profession %><br />
       <% professions_array = ["", "Pharmacist", "Physician", "Physician Assistant", "Registered Nurse", "Respiratory", "Social Worker", "Other"] %>
-      <%= f.select :profession, options_for_select(professions_array, 0) %>
+      <%= f.select :profession, options_for_select(professions_array, @current_user.profession) %>
     </div>
 
 

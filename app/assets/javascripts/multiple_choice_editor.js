@@ -72,7 +72,7 @@ $(function() {
     editor.show();
 
     // Deserialize existing questions and display them - also set view up
-    var jsonString = jsonField.val() || '{\"questions\": []}';
+    var jsonString = jsonField.val() || '{\"questions\":[], \"answers\":[]}';
     var json = JSON.parse(jsonString);
     console.log(jsonString);
 
