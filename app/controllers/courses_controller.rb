@@ -47,6 +47,7 @@ class CoursesController < ApplicationController
   # DELETE /courses/1
   # DELETE /courses/1.json
   def destroy
+    YoutubeVideoId.where(course_id: @course.id).destroy_all
     UserMembership.where(course_id: @course.id).destroy_all
     @course.destroy
 
