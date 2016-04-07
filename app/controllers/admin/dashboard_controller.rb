@@ -6,7 +6,7 @@ class Admin::DashboardController < ApplicationController
     @memberships = UserMembership.where(admin_approved: false)
 
     # Courses where someone needs to be approved
-    @courses = @memberships.map { |m| m.course }.uniq { |c| c.id }
+    @courses = @memberships.map { |m| m.course }.compact.uniq { |c| c.id }
   end
 
   # WARNING: this is slow so...
@@ -41,6 +41,6 @@ class Admin::DashboardController < ApplicationController
     @memberships = UserMembership.all.select { |m| m.didUserPassCourse? }
 
     # Courses where someone needs to be approved
-    @courses = @memberships.map { |m| m.course }.uniq { |c| c.id }
+    @courses = @memberships.map { |m| m.course }.compact.uniq { |c| c.id }
   end
 end
