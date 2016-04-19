@@ -32,9 +32,9 @@ class User < ActiveRecord::Base
       return false
     end
 
-    if not membership.hasUserBeenAcceptedIntoCourse?
-      return false
-    end
+    #if not membership.hasUserBeenAcceptedIntoCourse?
+    #  return false
+    #end
 
     if not membership.canUserRetakeCourse?
       return false

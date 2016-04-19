@@ -75,10 +75,9 @@ class CoursesController < ApplicationController
       end
     end
 
-    puts totalCorrect
-    puts correctAnswers
+    questionCount = correctAnswers.count > 0 ? correctAnswers : 1
 
-    score = ((totalCorrect / correctAnswers.count) * 100).round
+    score = ((totalCorrect / questionCount) * 100).round
     puts score
     membership = current_user.getMembershipFor(@course)
     membership.setQuizResult(score)

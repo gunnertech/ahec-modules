@@ -21,6 +21,10 @@ class UserMembership < ActiveRecord::Base
   end
 
   def didUserPassCourse?
+    puts self.course_grade
+    puts self.course_id
+    puts self.user_id
+    puts self.id
     return self.course_grade >= self.course.minimum_score
   end
 end
