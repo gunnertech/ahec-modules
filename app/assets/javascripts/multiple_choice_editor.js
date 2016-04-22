@@ -182,3 +182,7 @@ $(function() {
   }
 });
 
+$('.quiz-completed-survey').load(function () {
+    $(this).height($(this).contents().height());
+    $(this).width($(this).contents().width());
+});

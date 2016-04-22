@@ -35,7 +35,15 @@
 }
 
 .quiz-questions {
+  margin-top: 50px;
   padding: 15px 0;
+
+  > fieldset {
+    margin-bottom: 50px;
+  }
 }
 
-
+.quiz-completed-survey {
+  display: block;
+  margin: 0 auto;
+}
