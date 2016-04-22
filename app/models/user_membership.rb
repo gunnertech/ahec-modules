@@ -42,5 +42,6 @@ class UserMembership < ActiveRecord::Base
 
     seconds = seconds_diff
 
-    return "#{hours.to_s.rjust(2, '0')} Hrs, #{minutes.to_s.rjust(2, '0')} Mins, #{seconds.to_s.rjust(2, '0')} Secd
+    return "#{hours.to_s.rjust(2, '0')} Hrs, #{minutes.to_s.rjust(2, '0')} Mins, #{seconds.to_s.rjust(2, '0')} Secs"
+  end
 end
