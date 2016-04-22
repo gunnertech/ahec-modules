@@ -15,6 +15,8 @@ gem "sass-rails", "5.0.4"
 gem "therubyracer", "0.12.2"
 gem "twitter-bootstrap-rails", "3.2.0"
 gem "uglifier", "2.7.2"
+gem "paperclip"
+gem "aws-sdk"
 
 group :development do
   gem "better_errors", "0.8.0"

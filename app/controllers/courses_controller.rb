@@ -75,7 +75,7 @@ class CoursesController < ApplicationController
       end
     end
 
-    questionCount = correctAnswers.count > 0 ? correctAnswers : 1
+    questionCount = (correctAnswers.count > 0) ? correctAnswers.count : 1
 
     score = ((totalCorrect / questionCount) * 100).round
     puts score
