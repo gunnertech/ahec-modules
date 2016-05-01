@@ -1,7 +1,7 @@
 class CoursesController < ApplicationController
   before_filter :authorize_user
 
-  before_action :set_course, only: [:show, :quiz, :grade_quiz, :register, :edit, :update, :destroy, :results]
+  before_action :set_course, only: [:show, :quiz, :grade_quiz, :register, :edit, :update, :destroy, :results, :display_certificate]
 
   # GET /courses
   # GET /courses.json
@@ -47,8 +47,6 @@ class CoursesController < ApplicationController
   # DELETE /courses/1
   # DELETE /courses/1.json
   def destroy
-    YoutubeVideoId.where(course_id: @course.id).destroy_all
-    UserMembership.where(course_id: @course.id).destroy_all
     @course.destroy
 
     respond_to do |format|
@@ -89,6 +87,25 @@ class CoursesController < ApplicationController
   def results
   end
 
+  def display_certificate
+    @membership = current_user.getMembershipFor(@course)
+
+    if not @membership.didUserPassCourse?
+      redirect_to courses_path
+      return
+    end
+
+    respond_to do |format|
+      format.html
+      format.pdf do
+        render pdf: 'certificate',
+          orientation: 'Landscape',
+          background: true,
+          template: 'courses/display_certificate.html.erb'
+      end
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_course
@@ -98,6 +115,6 @@ class CoursesController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def course_params
       params.require(:course).permit(:title, :description, :video_url, :minimum_score,
-                                     :question_json, youtube_video_ids_attributes: [:id, :video_id, :_destroy])
+                                     :question_json, youtube_video_ids_attributes: [:id, :video_id, :_destroy], course_general_attachments_attributes: [:id, :document, :_destroy], video_uploads_attributes: [:id, :hosted_url, :_destroy])
     end
 end

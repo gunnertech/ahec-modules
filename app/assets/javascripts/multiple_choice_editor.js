@@ -74,7 +74,6 @@ $(function() {
     // Deserialize existing questions and display them - also set view up
     var jsonString = jsonField.val() || '{\"questions\":[], \"answers\":[]}';
     var json = JSON.parse(jsonString);
-    console.log(jsonString);
 
     // For each existing question
     for (var i = 0; i < json["questions"].length; i++) {

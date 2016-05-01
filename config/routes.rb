@@ -17,9 +17,10 @@ Rails.application.routes.draw do
   resources :courses do
     member do
       post '/quiz', to: 'courses#grade_quiz'
-      get :quiz
 
+      get :quiz
       get '/quiz/results', to: 'courses#results'
+      get '/certificate', to: 'courses#display_certificate'
 
       post :register
     end
@@ -29,5 +30,5 @@ Rails.application.routes.draw do
       root :to => redirect('/courses'), as: :authenticated_root
   end
 
-  root :to => redirect('/users/sign_in')
+  root :to => 'application#index'#redirect('/users/sign_in')
 end

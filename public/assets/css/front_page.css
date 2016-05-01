@@ -1,0 +1,7 @@
+.header-logo {
+  width: 200px;
+}
+
+.title-shadow {
+  text-shadow: -1px 0 black, 0 2px black;
+}

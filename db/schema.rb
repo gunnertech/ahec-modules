@@ -11,10 +11,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160325235923) do
+ActiveRecord::Schema.define(version: 20160427134607) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "course_general_attachments", force: :cascade do |t|
+    t.datetime "created_at",            null: false
+    t.datetime "updated_at",            null: false
+    t.string   "document_file_name"
+    t.string   "document_content_type"
+    t.integer  "document_file_size"
+    t.datetime "document_updated_at"
+    t.integer  "course_id"
+  end
+
+  add_index "course_general_attachments", ["course_id"], name: "index_course_general_attachments_on_course_id", using: :btree
 
   create_table "courses", force: :cascade do |t|
     t.datetime "created_at",    null: false
@@ -62,10 +74,20 @@ ActiveRecord::Schema.define(version: 20160325235923) do
     t.string   "zip_code"
     t.string   "nabp_id"
     t.date     "dob"
+    t.text     "professional_licenses"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
+
+  create_table "video_uploads", force: :cascade do |t|
+    t.string   "hosted_url"
+    t.integer  "course_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "video_uploads", ["course_id"], name: "index_video_uploads_on_course_id", using: :btree
 
   create_table "youtube_video_ids", force: :cascade do |t|
     t.string   "video_id"
@@ -76,5 +98,7 @@ ActiveRecord::Schema.define(version: 20160325235923) do
 
   add_index "youtube_video_ids", ["course_id"], name: "index_youtube_video_ids_on_course_id", using: :btree
 
+  add_foreign_key "course_general_attachments", "courses"
+  add_foreign_key "video_uploads", "courses"
   add_foreign_key "youtube_video_ids", "courses"
 end

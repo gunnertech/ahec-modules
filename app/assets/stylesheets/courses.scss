@@ -46,4 +46,20 @@
 .quiz-completed-survey {
   display: block;
   margin: 0 auto;
+  margin-bottom: 15px;
+}
+
+.course-file-download-links {
+  margin-bottom: 25px;
+}
+
+.course-self-hosted-videos {
+  margin-bottom: 25px;
+
+  video {
+    height: 315px;
+    width: 560px;
+    display: block;
+    margin: 0 auto;
+  }
 }

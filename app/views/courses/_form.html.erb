@@ -20,19 +20,47 @@
     <%= f.text_area :description, class: "form-control" %>
   </div>
   <div class="field">
-    <%= f.label :minimum_score %><br>
+    <%= f.label :minimum_score, "Minimum Passing Score" %><br>
     <%= f.text_field :minimum_score, class: "form-control" %>
   </div>
 
   <div id="youtube-ids">
     <%= f.fields_for :youtube_video_ids do |ff| %>
       <div>
-        <%= ff.label :URL %>
+        <%= ff.label :video_id, "YouTube Video URL" %>
         <%= ff.text_field :video_id, class: "form-control" %>
 
         <% if ff.object.persisted? %>
           <%= ff.check_box :_destroy %>
           <%= ff.label :_destroy, "Delete?" %>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+
+  <div id="course-video-uploads">
+    <%= f.fields_for :video_uploads do |builder| %>
+      <div>
+        <%= builder.label :hosted_url, "URL for external video" %>
+        <%= builder.text_field :hosted_url, class: "form-control" %>
+
+        <% if builder.object.persisted? %>
+          <%= builder.check_box :_destroy %>
+          <%= builder.label :_destroy, "Delete?" %>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+
+  <div id="course-general-attachments">
+    <%= f.fields_for :course_general_attachments do |builder| %>
+      <div>
+        <%= builder.label :document, "General Document Upload" %>
+        <%= builder.file_field :document %>
+
+        <% if builder.object.persisted? %>
+          <%= builder.check_box :_destroy %>
+          <%= builder.label :_destroy, "Delete?" %>
         <% end %>
       </div>
     <% end %>

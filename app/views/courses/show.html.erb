@@ -9,6 +9,23 @@
   </br>
 <% end %>
 
+<div class="course-self-hosted-videos">
+  <% for video in @course.video_uploads %>
+    <video controls>
+      <source src="<%= video.hosted_url %>" type="video/mp4">
+      Sorry, your browser doesn't support embedded videos, 
+      but don't worry, you can <a href="<%= video.hosted_url %>">Download it</a>
+      and watch it with your favorite video player!
+    </video>
+  <% end %>
+</div>
+
+<div class="course-file-download-links">
+  <% for downloadable in @course.course_general_attachments %>
+    <%= link_to ("Download " + downloadable.document_file_name), downloadable.document.url(:original, false) %>
+  <% end %>
+</div>
+
 <% if current_user.isEligibleToTakeTest?(@course) %>
 <% end %>
 
@@ -22,7 +39,9 @@
 
 <div class="text-center">
   <% if current_user.isRegisteredFor?(@course) %>
+    <% puts "Registered" %>
     <% if current_user.isEligibleToTakeTest?(@course) %>
+      <% puts "Eligible" %>
       <%= link_to 'Take Quiz', quiz_course_path(@course), class: 'btn btn-primary' %>
     <% end %>
   <% else %>

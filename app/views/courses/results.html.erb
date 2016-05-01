@@ -1,10 +1,13 @@
 <% if current_user.getMembershipFor(@course).didUserPassCourse? %>
-  <h1 class="text-center">Congratulations! You have passed the course - your certificate will be sent to you shortly.</h1>
+  <h1 class="text-center">Congratulations! You have passed the course - your certificate can be claimed by pressing &quot;Next&quot; below.</h1>
+  <div class="text-center">
+    <iframe class="quiz-completed-survey" src="https://docs.google.com/forms/d/16pzykdHpGsXUSUnaidRiWOZ7huXkjBrHIdVCt0Gync8/viewform?embedded=true" width="760" height="1500" frameborder="0" marginheight="0" marginwidth="0">Loading...</iframe>
+    <%= link_to 'Next', certificate_course_url(:format => :pdf), class: 'btn btn-primary'%>
+  </div>
 <% else %>
   <h1 class="text-center">We are sorry, you didn't pass - remember you have 3 test attempts!</h1>
   <iframe class="quiz-completed-survey" src="https://docs.google.com/forms/d/16pzykdHpGsXUSUnaidRiWOZ7huXkjBrHIdVCt0Gync8/viewform?embedded=true" width="760" height="1500" frameborder="0" marginheight="0" marginwidth="0">Loading...</iframe>
+  <div class="text-center">
+    <%= link_to 'Back', courses_path, class: 'btn btn-primary'%>
+  </div>
 <% end %>
-
-<div class="text-center">
-  <%= link_to 'Back', courses_path, class: 'btn btn-primary'%>
-</div>

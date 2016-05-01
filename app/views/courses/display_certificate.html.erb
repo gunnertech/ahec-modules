@@ -1,0 +1,94 @@
+<html>
+  <head>
+    <style>
+      body {
+        <% if params[:format] == 'pdf' %>
+          background-image: url('file://<%= Rails.root.join('app/assets/images/certificate-bg.jpg') %>');
+          font-size: 90%;
+          padding-bottom: 67%;
+          background-size: 100% 100%;
+        <% else %>
+          background-image: url('<%= asset_path('certificate-bg.jpg') %>');
+          width: 100%;
+          background-size: cover;
+          padding-bottom: 72%;
+        <% end %>
+        width: 100%;
+        background-repeat: no-repeat;
+        position: relative;
+        height: 0;
+      }
+
+      .text-container {
+        position: absolute;
+        text-align: center;
+        left: 0;
+        right: 0;
+        bottom: 0;
+
+        <% if params[:format] == 'pdf' %>
+          top: 10%;
+        <% else %>
+          top: 15%;
+        <% end %>
+      }
+
+      .text {
+        font-size: 1.25em;
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 30%;
+      }
+
+      .course-id {
+        position: absolute;
+        left: 12%;
+
+        <% if params[:format] == 'pdf' %>
+          bottom: 16%;
+        <% else %>
+          bottom: 13%;
+        <% end %>
+      }
+
+      .date {
+        font-style: italic;
+      }
+
+      h1 {
+        font-size: 4em;
+      }
+      
+      h2 {
+        font-size: 2.25em;
+      }
+
+      h3 {
+        font-size: 1.5em;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="text-container">
+      <h1>Certificate of Completion</h1>
+
+      <span class="text">
+        This certificate of completion is presented to
+        <h2>
+          <%= current_user.first_name + " " + current_user.last_name %>
+        </h2>
+        on this
+        <span class="date">
+          day <%= @membership.updated_at.strftime("%d of %B, %Y") %>
+        </span>
+
+        for successfully completing the course 
+
+        <h3>&quot;<%= @course.title %>&quot;</h3>
+      </span>
+
+      <span class="course-id">Course #: <%= @course.id %></span>
+    </div>
+  </body>
+</html>
