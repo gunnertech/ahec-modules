@@ -52,6 +52,6 @@ class User < ActiveRecord::Base
   end
 
   def getMembershipFor(course)
-    return UserMembership.where(course_id: course.id).first
+    return UserMembership.where(course_id: course.id, user_id: current_user.id).first
   end
 end

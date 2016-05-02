@@ -39,7 +39,6 @@
 
 <div class="text-center">
   <% if current_user.isRegisteredFor?(@course) %>
-    <% puts "Registered" %>
     <% if current_user.isEligibleToTakeTest?(@course) %>
       <% puts "Eligible" %>
       <%= link_to 'Take Quiz', quiz_course_path(@course), class: 'btn btn-primary' %>

@@ -17,7 +17,6 @@ class UserMembership < ActiveRecord::Base
   end
 
   def canUserRetakeCourse?
-    puts self.id
     return (self.course_attempts < 3)
   end
 
