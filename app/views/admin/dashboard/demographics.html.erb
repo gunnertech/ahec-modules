@@ -17,6 +17,7 @@
       <th>NABP #</th>
       <th>Latest Test Score</th>
       <th>Attempts</th>
+      <th>Time Completed At</th>
       <th>Completion Time</th>
     </thead>
     <tbody>
@@ -32,6 +33,7 @@
           <td><%= membership.user.nabp_id %></td>
           <td><%= membership.course_grade %></td>
           <td><%= membership.course_attempts %></td>
+          <td><%= membership.updated_at %></td>
           <td><%= membership.get_completion_time %></td>
         </tr>
       <% end %>
