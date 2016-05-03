@@ -10,6 +10,11 @@
       <th>Email</th>
       <th>Profession</th>
       <th>Address</th>
+      <th>City</th>
+      <th>State</th>
+      <th>Zip</th>
+      <th>NABP #</th>
+      <th>Professional Licenses</th>
     </thead>
     <tbody>
       <% @memberships.where(course_id: course.id).each do |request| %>
@@ -18,7 +23,12 @@
           <td><%= request.user.email %></td>
           <td><%= request.user.profession %></td>
           <td><%= request.user.address %></td>
-          <td><%= button_to "Accept", { :controller => 'dashboard', :id => request.id, :action => 'approve_member'}, :class => "btn btn-primary", :method => :post %></td>
+          <td><%= request.user.city %></td>
+          <td><%= request.user.state %></td>
+          <td><%= request.user.zip_code %></td>
+          <td><%= request.user.nabp_id %></td>
+          <td><%= request.user.professional_licenses %></td>
+          <!--<td><%= button_to "Accept", { :controller => 'dashboard', :id => request.id, :action => 'approve_member'}, :class => "btn btn-primary", :method => :post %></td> -->
         </tr>
       <% end %>
     </tbody>
