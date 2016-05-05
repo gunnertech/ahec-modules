@@ -3,6 +3,10 @@ Rails.application.routes.draw do
     registrations: 'users/registrations',
   }
 
+  namespace :users do
+    get '/passed_courses', to: 'user_membership#get_passed_courses_certificates'
+  end
+
   namespace :admin do
     get '/join_requests', to: 'dashboard#join_requests'
     post '/join_requests/approve', to: 'dashboard#approve_member'

@@ -54,4 +54,17 @@ class User < ActiveRecord::Base
   def getMembershipFor(course)
     return UserMembership.where(course_id: course.id, user_id: self.id).first
   end
+
+  def get_passed_courses
+    @memberships = UserMembership.where(user_id: self.id)
+    @memberships = @memberships.map { |membership|
+      if membership.didUserPassCourse?
+        membership
+      end
+    }.compact.uniq { |m| m.id }
+
+    @courses = @memberships.map { |m| m.course }.compact.uniq { |c| c.id }
+
+    return @courses
+  end
 end

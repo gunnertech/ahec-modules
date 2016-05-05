@@ -1,0 +1,27 @@
+<table class="table table-striped">
+  <caption>
+    Passed Courses
+  </caption>
+  <thead>
+    <th>Course Name</th>
+    <th>Certificate</th>
+  </thead>
+  <tbody>
+    <% @courses.each do |course| %>
+      <tr>
+        <td><%= course.title %></td>
+        <td><%= link_to "Certificate", certificate_course_path(course, :pdf) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<style type="text/css">
+table tr td {
+  padding-right: 5px;
+}
+
+    table tr th {
+      padding-right: 5px;
+    }
+</style>
