@@ -57,6 +57,7 @@
       <div>
         <%= builder.label :document, "General Document Upload" %>
         <%= builder.file_field :document %>
+        <%= builder.text_area :description %>
 
         <% if builder.object.persisted? %>
           <%= builder.check_box :_destroy %>

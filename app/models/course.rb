@@ -18,7 +18,7 @@ class Course < ActiveRecord::Base
     :reject_if => :all_blank
   accepts_nested_attributes_for :course_general_attachments,
     :allow_destroy => true,
-    :reject_if => lambda { |t| t['document'].nil? }
+    :reject_if => :all_blank
 
   protected
   def json_format

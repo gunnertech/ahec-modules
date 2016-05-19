@@ -2,6 +2,14 @@
 
 <h1 class="text-center"><%= @course.title %></h1>
 
+<p>
+  <% if @course.description == '' %>
+    No Description
+  <% else %>
+    <%= @course.description %>
+  <% end %>
+</p>
+
 <div id="player"></div>
 
 <% for video_url in @course.youtube_video_ids %>
@@ -23,19 +31,12 @@
 <div class="course-file-download-links">
   <% for downloadable in @course.course_general_attachments %>
     <%= link_to ("Download " + downloadable.document_file_name), downloadable.document.url(:original, false) %>
+    <p><%= downloadable.description %></p>
   <% end %>
 </div>
 
 <% if current_user.isEligibleToTakeTest?(@course) %>
 <% end %>
-
-<p>
-  <% if @course.description == '' %>
-    No Description
-  <% else %>
-    <%= @course.description %>
-  <% end %>
-</p>
 
 <div class="text-center">
   <% if current_user.isRegisteredFor?(@course) %>

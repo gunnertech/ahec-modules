@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160427134607) do
+ActiveRecord::Schema.define(version: 20160519000836) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -24,6 +24,7 @@ ActiveRecord::Schema.define(version: 20160427134607) do
     t.integer  "document_file_size"
     t.datetime "document_updated_at"
     t.integer  "course_id"
+    t.text     "description"
   end
 
   add_index "course_general_attachments", ["course_id"], name: "index_course_general_attachments_on_course_id", using: :btree
