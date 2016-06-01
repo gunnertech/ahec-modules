@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160519000836) do
+ActiveRecord::Schema.define(version: 20160601014445) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -30,12 +30,13 @@ ActiveRecord::Schema.define(version: 20160519000836) do
   add_index "course_general_attachments", ["course_id"], name: "index_course_general_attachments_on_course_id", using: :btree
 
   create_table "courses", force: :cascade do |t|
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
+    t.datetime "created_at",                     null: false
+    t.datetime "updated_at",                     null: false
     t.text     "title"
     t.text     "description"
     t.text     "question_json"
     t.integer  "minimum_score"
+    t.integer  "minimum_time_spent", default: 0
   end
 
   create_table "user_memberships", force: :cascade do |t|
@@ -46,6 +47,8 @@ ActiveRecord::Schema.define(version: 20160519000836) do
     t.boolean  "admin_approved",  default: false
     t.decimal  "course_grade",    default: 0.0
     t.integer  "course_attempts", default: 0
+    t.decimal  "pretest_grade"
+    t.integer  "minutes_spent",   default: 0
   end
 
   add_index "user_memberships", ["course_id", "user_id"], name: "index_user_memberships_on_course_id_and_user_id", unique: true, using: :btree
@@ -76,6 +79,14 @@ ActiveRecord::Schema.define(version: 20160519000836) do
     t.string   "nabp_id"
     t.date     "dob"
     t.text     "professional_licenses"
+    t.text     "social_security"
+    t.text     "personal_phone"
+    t.text     "employer"
+    t.text     "employer_phone"
+    t.text     "employer_address"
+    t.text     "employer_state"
+    t.text     "employer_zip"
+    t.text     "employer_city"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree

@@ -23,6 +23,10 @@
     <%= f.label :minimum_score, "Minimum Passing Score" %><br>
     <%= f.text_field :minimum_score, class: "form-control" %>
   </div>
+  <div class="field">
+    <%= f.label :minimum_time_spent %><br>
+    <%= f.text_field :minimum_time_spent, class: "form-control" %>
+  </div>
 
   <div id="youtube-ids">
     <%= f.fields_for :youtube_video_ids do |ff| %>

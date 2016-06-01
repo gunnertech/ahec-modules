@@ -13,14 +13,23 @@ class Admin::DashboardController < ApplicationController
   # TODO: Optimize
   def demographics
     # Users who have had the maximum 3 attempts of the quiz OR Passed
-    @memberships = UserMembership.all.map { |membership|
+    membership_ids = UserMembership.all.map { |membership|
       if membership.didUserPassCourse? || 
          membership.course_attempts == 3
-        membership
+        membership.id
       end
-    }.compact.uniq { |m| m.id }
+    }.compact.uniq
 
-    @courses = @memberships.map { |m| m.course }.compact.uniq { |c| c.id }
+    memberships_temp = UserMembership.find(membership_ids)
+    course_ids = memberships_temp.map { |m| m.course.id }.compact.uniq
+
+    @courses = Course.where(id: course_ids)
+    @memberships = UserMembership.where(id: membership_ids)
+
+    respond_to do |format|
+      format.html
+      format.csv { send_data (@memberships.to_csv + @courses.to_csv) }
+    end
   end
 
   def approve_member

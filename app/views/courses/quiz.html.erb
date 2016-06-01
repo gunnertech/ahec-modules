@@ -1,7 +1,13 @@
 <p id="notice"><%= notice %></p>
 
-<% if current_user.isEligibleToTakeTest?(@course) %>
-  <h1 class="text-center">Quiz on "<%= @course.title %>"</h1>
+<% if current_user.isEligibleToTakeTest?(@course) ||
+      current_user.isEligibleToTakePretest?(@course) %>
+  <% if current_user.isEligibleToTakePretest?(@course) %>
+    <h1 class="text-center">Pre-Quiz on "<%= @course.title %>"</h1>
+    <p class="text-center">Please complete a pretest - this test will not be graded</p>
+  <% else %>
+    <h1 class="text-center">Quiz on "<%= @course.title %>"</h1>
+  <% end %>
 
   <%= form_tag(quiz_course_path(@course)) %>
   <!-- Generate a Quiz -->
@@ -10,7 +16,7 @@
       <fieldset id="question-<%= questionIndex %>">
         <legend><%= question["title"] %></legend>
         <% question["choices"].each_with_index do |choice, choiceIndex| %>
-          <input type="radio" name="question-<%= questionIndex %>" value="<%= choiceIndex %>">
+          <input type="radio" name="question-<%= questionIndex %>" value="<%= choiceIndex + 1 %>">
           <%= choice %>
           </input>
         <% end %>

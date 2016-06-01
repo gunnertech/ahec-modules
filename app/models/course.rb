@@ -48,4 +48,16 @@ class Course < ActiveRecord::Base
     puts url.query
 =end
   end
+
+  def self.to_csv
+    attributes = %w{ id created_at updated_at title description minimum_score minimum_time_spent }
+
+    CSV.generate(headers: true) do |csv|
+      csv << attributes
+
+      all.each do |membership|
+        csv << attributes.map{ |attr| membership.send(attr) }
+      end
+    end
+  end
 end

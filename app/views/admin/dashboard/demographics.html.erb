@@ -5,6 +5,8 @@
       Course Title: <%= link_to course.title, course %> 
       <br />
       Minimum Passing Grade: <%= course.minimum_score %>%
+      <br />
+      Minimum Time: <%= course.minimum_time_spent %> minute(s)
     </caption>
     <thead>
       <th>Name</th>
@@ -16,10 +18,20 @@
       <th>Zip</th>
       <th>NABP #</th>
       <th>Professional Licenses</th>
+      <th>Date of Birth</th>
+      <th>Last 4 of Social</th>
+      <th>Personal Phone</th>
+      <th>Employer Name</th>
+      <th>Employer Phone</th>
+      <th>Employer Address</th>
+      <th>Employer State</th>
+      <th>Employer City</th>
+      <th>Employer Zip</th>
+      <th>Pre-Test Score</th>
       <th>Latest Test Score</th>
       <th>Attempts</th>
       <th>Time Completed At</th>
-      <th>Completion Time</th>
+      <th>Minutes Spent</th>
     </thead>
     <tbody>
       <% @memberships.select { |m| m.course_id == course.id }.each do |membership| %>
@@ -33,10 +45,20 @@
           <td><%= membership.user.zip_code %></td>
           <td><%= membership.user.nabp_id %></td>
           <td><%= membership.user.professional_licenses %></td>
+          <td><%= membership.user.dob %></td>
+          <td><%= membership.user.social_security %></td>
+          <td><%= membership.user.personal_phone %></td>
+          <td><%= membership.user.employer %></td>
+          <td><%= membership.user.employer_phone %></td>
+          <td><%= membership.user.employer_address %></td>
+          <td><%= membership.user.employer_state %></td>
+          <td><%= membership.user.employer_city %></td>
+          <td><%= membership.user.employer_zip %></td>
+          <td><%= membership.pretest_grade %></td>
           <td><%= membership.course_grade %></td>
           <td><%= membership.course_attempts %></td>
           <td><%= membership.updated_at %></td>
-          <td><%= membership.get_completion_time %></td>
+          <td><%= membership.minutes_spent %></td>
         </tr>
       <% end %>
     </tbody>

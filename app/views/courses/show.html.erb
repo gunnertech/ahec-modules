@@ -1,7 +1,6 @@
 <p id="notice"><%= notice %></p>
 
 <h1 class="text-center"><%= @course.title %></h1>
-
 <p>
   <% if @course.description == '' %>
     No Description
@@ -10,39 +9,48 @@
   <% end %>
 </p>
 
-<div id="player"></div>
 
-<% for video_url in @course.youtube_video_ids %>
-  <iframe class="youtube-player" width="560" height="315" src="https://www.youtube.com/embed/<%= video_url.video_id %>" frameborder="0" allowfullscreen></iframe>
-  </br>
-<% end %>
+<% if current_user.isRegisteredFor?(@course) %>
+  <% if not current_user.isEligibleToTakePretest?(@course) %>
+    <script>
+      course_base_url = "<%= request.original_url %>";
+    </script>
+    <div id="time-spent">Time Spent: <span class="minutes"><%= current_user.getMembershipFor(@course).minutes_spent.to_s.rjust(2, '0') %></span>:<span class="seconds">00</span> / Minimum: <%= @course.minimum_time_spent.to_s.rjust(2, '0') %></div>
+    <div id="player"></div>
 
-<div class="course-self-hosted-videos">
-  <% for video in @course.video_uploads %>
-    <video controls>
-      <source src="<%= video.hosted_url %>" type="video/mp4">
-      Sorry, your browser doesn't support embedded videos, 
-      but don't worry, you can <a href="<%= video.hosted_url %>">Download it</a>
-      and watch it with your favorite video player!
-    </video>
+    <% for video_url in @course.youtube_video_ids %>
+      <iframe class="youtube-player" width="560" height="315" src="https://www.youtube.com/embed/<%= video_url.video_id %>" frameborder="0" allowfullscreen></iframe>
+      </br>
+    <% end %>
+
+    <div class="course-self-hosted-videos">
+      <% for video in @course.video_uploads %>
+        <video controls>
+          <source src="<%= video.hosted_url %>" type="video/mp4">
+          Sorry, your browser doesn't support embedded videos, 
+          but don't worry, you can <a href="<%= video.hosted_url %>">Download it</a>
+          and watch it with your favorite video player!
+        </video>
+      <% end %>
+    </div>
+
+    <div class="course-file-download-links">
+      <% for downloadable in @course.course_general_attachments %>
+        <%= link_to ("Download " + downloadable.document_file_name), downloadable.document.url(:original, false) %>
+        <p><%= downloadable.description %></p>
+      <% end %>
+    </div>
   <% end %>
-</div>
-
-<div class="course-file-download-links">
-  <% for downloadable in @course.course_general_attachments %>
-    <%= link_to ("Download " + downloadable.document_file_name), downloadable.document.url(:original, false) %>
-    <p><%= downloadable.description %></p>
-  <% end %>
-</div>
-
-<% if current_user.isEligibleToTakeTest?(@course) %>
 <% end %>
 
 <div class="text-center">
   <% if current_user.isRegisteredFor?(@course) %>
     <% if current_user.isEligibleToTakeTest?(@course) %>
-      <% puts "Eligible" %>
       <%= link_to 'Take Quiz', quiz_course_path(@course), class: 'btn btn-primary' %>
+    <% else %>
+      <% if current_user.isEligibleToTakePretest?(@course) %>
+        <%= link_to 'Take Pre-Quiz', quiz_course_path(@course), class: 'btn btn-primary' %>
+      <% end %>
     <% end %>
   <% else %>
     <%= link_to 'Register', register_course_path(@course), method: :post, class: 'btn btn-primary' %>

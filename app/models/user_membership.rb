@@ -1,3 +1,5 @@
+require 'csv'
+
 class UserMembership < ActiveRecord::Base
   belongs_to :user
   belongs_to :course
@@ -15,6 +17,7 @@ class UserMembership < ActiveRecord::Base
     return true
     #return self.admin_approved
   end
+
 
   def canUserRetakeCourse?
     return (self.course_attempts < 3)
@@ -39,5 +42,17 @@ class UserMembership < ActiveRecord::Base
     seconds = seconds_diff
 
     return "#{hours.to_s.rjust(2, '0')} Hrs, #{minutes.to_s.rjust(2, '0')} Mins, #{seconds.to_s.rjust(2, '0')} Secs"
+  end
+
+  def self.to_csv
+    attributes = %w{id course_id user_id created_at updated_at admin_approved course_grade course_attempts pretest_grade minutes_spent }
+
+    CSV.generate(headers: true) do |csv|
+      csv << attributes
+
+      all.each do |membership|
+        csv << attributes.map{ |attr| membership.send(attr) }
+      end
+    end
   end
 end

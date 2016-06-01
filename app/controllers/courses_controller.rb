@@ -1,12 +1,20 @@
 class CoursesController < ApplicationController
   before_filter :authorize_user
 
-  before_action :set_course, only: [:show, :quiz, :grade_quiz, :register, :edit, :update, :destroy, :results, :display_certificate]
+  before_action :set_course, only: [:show, :quiz, :grade_quiz, :register, :edit, :update, :destroy, :results, :display_certificate, :time_spent_update]
 
   # GET /courses
   # GET /courses.json
   def index
     @courses = Course.all
+  end
+
+  # POST /courses/1/time_spent
+  def time_spent_update
+    membership = current_user.getMembershipFor(@course)
+    membership.minutes_spent += 1
+    membership.save!
+    render :text => "Success"
   end
 
   # GET /courses/new
@@ -68,7 +76,7 @@ class CoursesController < ApplicationController
     (0..correctAnswers.count - 1).each do |n|
       userAnswer = params["question-" + n.to_s].to_i
 
-      if userAnswer == correctAnswers[n]
+      if userAnswer === (correctAnswers[n] + 1)
         totalCorrect += 1
       end
     end
@@ -76,11 +84,25 @@ class CoursesController < ApplicationController
     questionCount = (correctAnswers.count > 0) ? correctAnswers.count : 1
 
     score = ((totalCorrect / questionCount) * 100).round
-    puts score
     membership = current_user.getMembershipFor(@course)
-    membership.setQuizResult(score)
 
-    redirect_to quiz_results_course_path
+    if current_user.isEligibleToTakePretest?(@course)
+      membership.pretest_grade = score
+      membership.save
+
+      if totalCorrect == 0
+        flash[:notice] = "You answered no questions correctly"
+      elsif totalCorrect == 1
+        flash[:notice] = "You answered a question correctly"
+      else
+        flash[:notice] = "You answered " + totalCorrect.to_s + " questions correctly"
+      end
+
+      redirect_to course_path(@course)
+    elsif current_user.isEligibleToTakeTest?(@course)
+      membership.setQuizResult(score)
+      redirect_to quiz_results_course_path
+    end
   end
 
   # GET /courses/1/quiz/results
@@ -115,6 +137,6 @@ class CoursesController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def course_params
       params.require(:course).permit(:title, :description, :video_url, :minimum_score,
-                                     :question_json, youtube_video_ids_attributes: [:id, :video_id, :_destroy], course_general_attachments_attributes: [:id, :document, :description, :_destroy], video_uploads_attributes: [:id, :hosted_url, :_destroy])
+                                     :question_json, :minimum_time_spent, youtube_video_ids_attributes: [:id, :video_id, :_destroy], course_general_attachments_attributes: [:id, :document, :description, :_destroy], video_uploads_attributes: [:id, :hosted_url, :_destroy])
     end
 end

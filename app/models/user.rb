@@ -7,15 +7,23 @@ class User < ActiveRecord::Base
   has_many :user_memberships
   has_many :courses, :through => :user_memberships
 
+  validates :email, uniqueness: true
   validates_presence_of :first_name
   validates_presence_of :last_name
   validates_presence_of :dob
+  validates_presence_of :social_security
+  validates_presence_of :personal_phone
   validates_presence_of :address
   validates_presence_of :city
   validates_presence_of :state
   validates_presence_of :zip_code
+  validates_presence_of :employer
+  validates_presence_of :employer_phone
+  validates_presence_of :employer_city
+  validates_presence_of :employer_state
+  validates_presence_of :employer_zip
+  validates_presence_of :employer_address
   validates_presence_of :profession
-  validates :email, uniqueness: true
 
   def getDisplayName
     return (self.first_name + " " + self.last_name)
@@ -23,6 +31,20 @@ class User < ActiveRecord::Base
 
   def isRegisteredFor?(course)
     return self.courses.exists?(course.id)
+  end
+
+  def isEligibleToTakePretest?(course)
+    membership = self.getMembershipFor(course)
+
+    if membership
+      if not membership.pretest_grade
+        if membership.course_attempts == 0
+          return true
+        end
+      end
+    end
+
+    return false
   end
 
   def isEligibleToTakeTest?(course)
@@ -36,11 +58,19 @@ class User < ActiveRecord::Base
     #  return false
     #end
 
+    if not membership.pretest_grade
+      return false
+    end
+
     if not membership.canUserRetakeCourse?
       return false
     end
 
     if membership.didUserPassCourse?
+      return false
+    end
+
+    if membership.minutes_spent < course.minimum_time_spent
       return false
     end
 

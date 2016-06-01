@@ -1,7 +1,26 @@
 .header-logo {
   width: 200px;
+  height: 200px;
+  font-size: 100px;
+}
+
+.header-logo-ambulance {
+  float: left;
+}
+
+.header-logo-percent {
+  margin-top: 100px;
+  float: right;
 }
 
 .title-shadow {
   text-shadow: -1px 0 black, 0 2px black;
+}
+
+.navbar-title-shadow {
+  text-shadow: 0px 0px 2px #333;
+}
+
+.goal-links {
+  color: #555;
 }

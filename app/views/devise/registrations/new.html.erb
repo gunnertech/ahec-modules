@@ -10,24 +10,19 @@
     <%= f.label :last_name %><br />
     <%= f.text_field :last_name, placeholder: "Last Name", class: "login-field-cluster form-control" %>
 
-    <%= f.text_field :nabp_id, placeholder: "NABP e-Profile ID (if applicable)", class: "login-field-cluster form-control" %>
-
-    <%= f.label :professional_licenses %><br />
-    <%= f.text_area :professional_licenses, class: "login-field-cluster form-control" %>
-
     <%= f.label :date_of_birth %><br />
     <%= f.date_field :dob, class: "login-field-cluster form-control" %>
 
     <%= f.label :email %><br />
     <%= f.email_field :email,  placeholder: "Email", class: "login-field-cluster form-control" %>
 
-    <%= f.label :password %><br />
-    <%= f.password_field :password, autocomplete: "off", placeholder: "Password (8 Characters Minimum)", class: "login-field-cluster form-control" %>
+    <%= f.label :last_four_of_social %><br />
+    <%= f.text_field :social_security, placeholder: "Last Four of Social Security Number", class: "login-field-cluster form-control" %>
 
-    <%= f.label :password_confirmation %><br />
-    <%= f.password_field :password_confirmation, autocomplete: "off", placeholder: "Confirm Password", class: "login-field-cluster form-control" %>
+    <%= f.label :cell_or_home_phone %><br />
+    <%= f.text_field :personal_phone, placeholder: "Cell Phone #", class: "login-field-cluster form-control" %>
 
-    <%= f.label :address %><br />
+    <%= f.label :Home_address %><br />
     <%= f.text_field :address, placeholder: "Address", class: "login-field-cluster form-control" %>
 
     <%= f.label :city %><br />
@@ -38,6 +33,34 @@
 
     <%= f.label :zip_code %><br />
     <%= f.text_field :zip_code, placeholder: "Zip Code", class: "login-field-cluster form-control" %>
+
+    <%= f.label :password %><br />
+    <%= f.password_field :password, autocomplete: "off", placeholder: "Password (8 Characters Minimum)", class: "login-field-cluster form-control" %>
+
+    <%= f.label :password_confirmation %><br />
+    <%= f.password_field :password_confirmation, autocomplete: "off", placeholder: "Confirm Password", class: "login-field-cluster form-control" %>
+
+    <%= f.label :professional_licenses %><br />
+    <%= f.text_area :professional_licenses, class: "login-field-cluster form-control" %>
+    <%= f.text_field :nabp_id, placeholder: "NABP e-Profile ID (if applicable)", class: "login-field-cluster form-control" %>
+
+    <%= f.label :employer %><br />
+    <%= f.text_field :employer, placeholder: "Employer", class: "login-field-cluster form-control" %>
+
+    <%= f.label :employer_phone %><br />
+    <%= f.text_field :employer_phone, placeholder: "Employer", class: "login-field-cluster form-control" %>
+
+    <%= f.label :Work_address %><br />
+    <%= f.text_field :employer_address, placeholder: "Address", class: "login-field-cluster form-control" %>
+
+    <%= f.label :city %><br />
+    <%= f.text_field :employer_city, placeholder: "City", class: "login-field-cluster form-control" %>
+
+    <%= f.label :state %><br />
+    <%= f.text_field :employer_state, placeholder: "State", class: "login-field-cluster form-control" %>
+
+    <%= f.label :zip_code %><br />
+    <%= f.text_field :employer_zip, placeholder: "Zip Code", class: "login-field-cluster form-control" %>
 
     <%= f.label :profession %><br />
     <% professions_array = ["", "Pharmacist", "Physician", "Physician Assistant", "Registered Nurse", "Respiratory", "Social Worker", "Other"] %>

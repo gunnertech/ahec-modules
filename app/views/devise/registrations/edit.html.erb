@@ -35,6 +35,41 @@
     </div>
 
     <div class="field">
+      <%= f.label :home_or_cell_phone %><br />
+      <%= f.text_field :personal_phone, placeholder: "Cell Phone #", class: "edit-user-decluster form-control" %>
+    </div>
+
+    <div class="field">
+      <%= f.label :employer %><br />
+      <%= f.text_field :employer, placeholder: "Employer", class: "edit-user-decluster form-control" %>
+    </div>
+
+    <div class="field">
+      <%= f.label :employer_phone %><br />
+      <%= f.text_field :employer_phone, placeholder: "Employer", class: "edit-user-decluster form-control" %>
+    </div>
+
+    <div class="field">
+      <%= f.label :employer_city %><br />
+      <%= f.text_field :employer_city, class: "form-control edit-user-decluster" %>
+    </div>
+
+    <div class="field">
+      <%= f.label :employer_state %><br />
+      <%= f.text_field :employer_state, class: "form-control edit-user-decluster" %>
+    </div>
+
+    <div class="field">
+      <%= f.label :employer_zip %><br />
+      <%= f.text_field :employer_zip, class: "form-control edit-user-decluster" %>
+    </div>
+
+    <div class="field">
+      <%= f.label :employer_address %><br />
+      <%= f.text_field :employer_address, class: "form-control edit-user-decluster" %>
+    </div>
+
+    <div class="field">
       <%= f.label :address %><br />
       <%= f.text_field :address, class: "form-control edit-user-decluster" %>
     </div>

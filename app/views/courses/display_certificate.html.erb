@@ -52,6 +52,17 @@
         <% end %>
       }
 
+      .certificate-id {
+        position: absolute;
+        right: 13%;
+
+        <% if params[:format] == 'pdf' %>
+          bottom: 16%;
+        <% else %>
+          bottom: 13%;
+        <% end %>
+      }
+
       .date {
         font-style: italic;
       }
@@ -89,6 +100,7 @@
       </span>
 
       <span class="course-id">Course #: <%= @course.id %></span>
+      <span class="certificate-id">Certificate #: <%= @membership.id %></span>
     </div>
   </body>
 </html>
