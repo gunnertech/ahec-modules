@@ -6,7 +6,7 @@ $(function() {
     setInterval(function() {
       var seconds = parseInt(secondCount.text()) || 0;
 
-      if (seconds >= 60) {
+      if (seconds > 58) {
         seconds = 0;
       } else {
         seconds += 1;
