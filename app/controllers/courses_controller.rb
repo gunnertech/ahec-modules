@@ -89,6 +89,8 @@ class CoursesController < ApplicationController
     if current_user.isEligibleToTakePretest?(@course)
       membership.pretest_grade = score
       membership.save
+      puts membership.pretest_grade
+      puts membership.save!
 
       if totalCorrect == 0
         flash[:notice] = "You answered no questions correctly"
