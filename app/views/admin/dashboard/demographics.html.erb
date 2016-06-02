@@ -1,4 +1,7 @@
 <h1 class="text-center">All Users who have used all 3 test attempts (failed) or simply passed</h1>
+
+<%= link_to 'Download this data', admin_demographics_url(:format => :csv), class: 'btn btn-primary'%>
+
 <% @courses.each do |course| %>
   <table class="table table-striped">
     <caption>
