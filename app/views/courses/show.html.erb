@@ -19,7 +19,7 @@
     <div id="player"></div>
 
     <% for video_url in @course.youtube_video_ids %>
-      <iframe class="youtube-player" width="560" height="315" src="https://www.youtube.com/embed/<%= video_url.video_id %>" frameborder="0" allowfullscreen></iframe>
+      <iframe class="youtube-player" width="560" height="315" src="https://www.youtube.com/embed/<%= video_url.video_id %>?rel=0" frameborder="0" allowfullscreen></iframe>
       </br>
     <% end %>
 
