@@ -54,19 +54,11 @@ class User < ActiveRecord::Base
       return false
     end
 
-    #if not membership.hasUserBeenAcceptedIntoCourse?
-    #  return false
-    #end
-
     if not membership.pretest_grade
       return false
     end
 
     if not membership.canUserRetakeCourse?
-      return false
-    end
-
-    if membership.didUserPassCourse?
       return false
     end
 

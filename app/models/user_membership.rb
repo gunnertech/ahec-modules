@@ -20,7 +20,7 @@ class UserMembership < ActiveRecord::Base
 
 
   def canUserRetakeCourse?
-    return (self.course_attempts < 3)
+    return ((self.course_attempts < 3) && (!didUserPassCourse?))
   end
 
   def didUserPassCourse?

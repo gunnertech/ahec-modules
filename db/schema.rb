@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160601014445) do
+ActiveRecord::Schema.define(version: 20160620231235) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -37,6 +37,7 @@ ActiveRecord::Schema.define(version: 20160601014445) do
     t.text     "question_json"
     t.integer  "minimum_score"
     t.integer  "minimum_time_spent", default: 0
+    t.text     "certificate_token"
   end
 
   create_table "user_memberships", force: :cascade do |t|

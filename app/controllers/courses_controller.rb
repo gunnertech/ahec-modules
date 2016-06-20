@@ -1,7 +1,7 @@
 class CoursesController < ApplicationController
   before_filter :authorize_user
 
-  before_action :set_course, only: [:show, :quiz, :grade_quiz, :register, :edit, :update, :destroy, :results, :display_certificate, :time_spent_update]
+  before_action :set_course, only: [:show, :quiz, :grade_quiz, :register, :edit, :update, :destroy, :results, :display_certificate, :time_spent_update, :certificate_token]
 
   # GET /courses
   # GET /courses.json
@@ -136,7 +136,6 @@ class CoursesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def course_params
-      params.require(:course).permit(:title, :description, :video_url, :minimum_score,
-                                     :question_json, :minimum_time_spent, youtube_video_ids_attributes: [:id, :video_id, :_destroy], course_general_attachments_attributes: [:id, :document, :description, :_destroy], video_uploads_attributes: [:id, :hosted_url, :_destroy])
+      params.require(:course).permit(:title, :description, :video_url, :minimum_score, :certificate_token, :question_json, :minimum_time_spent, youtube_video_ids_attributes: [:id, :video_id, :_destroy], course_general_attachments_attributes: [:id, :document, :description, :_destroy], video_uploads_attributes: [:id, :hosted_url, :_destroy])
     end
 end

@@ -45,12 +45,10 @@
 
 <div class="text-center">
   <% if current_user.isRegisteredFor?(@course) %>
-    <% if current_user.isEligibleToTakeTest?(@course) %>
-      <%= link_to 'Take Quiz', quiz_course_path(@course), class: 'btn btn-primary' %>
+    <% if current_user.isEligibleToTakePretest?(@course) %>
+      <%= link_to 'Take Pre-Quiz', quiz_course_path(@course), class: 'btn btn-primary' %>
     <% else %>
-      <% if current_user.isEligibleToTakePretest?(@course) %>
-        <%= link_to 'Take Pre-Quiz', quiz_course_path(@course), class: 'btn btn-primary' %>
-      <% end %>
+      <%= link_to 'Take Quiz', quiz_course_path(@course), class: 'btn btn-primary' %>
     <% end %>
   <% else %>
     <%= link_to 'Register', register_course_path(@course), method: :post, class: 'btn btn-primary' %>
