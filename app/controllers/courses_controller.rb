@@ -83,7 +83,7 @@ class CoursesController < ApplicationController
 
     questionCount = (correctAnswers.count > 0) ? correctAnswers.count : 1
 
-    score = ((totalCorrect / questionCount) * 100).round
+    score = ((totalCorrect.to_f / questionCount) * 100)
     membership = current_user.getMembershipFor(@course)
 
     if current_user.isEligibleToTakePretest?(@course)
