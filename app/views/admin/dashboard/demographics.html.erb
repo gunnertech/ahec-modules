@@ -2,7 +2,7 @@
 
 <%= link_to 'Download this data', admin_demographics_url(:format => :csv), class: 'btn btn-primary'%>
 
-<% @courses.each do |course| %>
+<% @courses.sort_by { |m| m.title }.each do |course| %>
   <table class="table table-striped">
     <caption>
       Course Title: <%= link_to course.title, course %> 
@@ -37,7 +37,7 @@
       <th>Minutes Spent</th>
     </thead>
     <tbody>
-      <% @memberships.select { |m| m.course_id == course.id }.each do |membership| %>
+      <% (@memberships.select { |m| m.course_id == course.id }.sort_by { |m| m.id }).each do |membership| %>
         <tr>
           <td><%= membership.user.getDisplayName %></td>
           <td><%= membership.user.email %></td>

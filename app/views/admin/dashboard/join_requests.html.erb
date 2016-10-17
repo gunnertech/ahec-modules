@@ -2,7 +2,7 @@
   <h1>No Course Requests</h1>
 <% end %>
 
-<% @courses.each do |course| %>
+<% @courses.sort_by { |m| m.title }.each do |course| %>
   <table class="table table-striped">
     <caption>Course Title: <%= link_to course.title, course %></caption>
     <thead>
@@ -31,7 +31,7 @@
       <th>Minutes Spent</th>
     </thead>
     <tbody>
-      <% @memberships.where(course_id: course.id).each do |membership| %>
+      <% (@memberships.where(course_id: course.id).sort_by { |m| m.id }).each do |membership| %>
         <tr>
           <td><%= membership.user.getDisplayName %></td>
           <td><%= membership.user.email %></td>
