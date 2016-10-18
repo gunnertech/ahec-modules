@@ -10,7 +10,7 @@ class UserMembership < ActiveRecord::Base
     self.course_grade = score
     self.course_attempts += 1
 
-    if self.didUserPassCourse?
+    if score >= self.course.minimum_score
       self.passed_on = Time.now
     end
 
