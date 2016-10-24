@@ -9,6 +9,75 @@ class Admin::DashboardController < ApplicationController
     @courses = @memberships.map { |m| m.course }.compact.uniq { |c| c.id }
   end
 
+  def demographics_csv(courses, memberships)
+    CSV.generate do |csv|
+      courses.sort_by { |m| m.title }.each do |course|
+        csv << [
+          course.title.to_s,
+          ("Minimum Passing Grade: " + course.minimum_score.to_s),
+          ("Minimum Time: " + course.minimum_time_spent.to_s)
+        ]
+        csv << [
+          '',
+          'Name',
+          'Email',
+          'Profession',
+          'Address',
+          'City',
+          'State',
+          'Zip',
+          'NABP #',
+          'Professional Licenses',
+          'Date of Birth',
+          'Last 4 of Social',
+          'Personal Phone',
+          'Employer Name',
+          'Employer Phone',
+          'Employer Address',
+          'Employer State',
+          'Employer City',
+          'Employer Zip',
+          'Pre-Test Score',
+          'Latest Test Score',
+          'Attempts',
+          'Time Completed At',
+          'Minutes Spent'
+        ]
+
+        (@memberships.select { |m| m.course_id == course.id }.sort_by { |m| m.id }).each do |membership|
+          csv << [
+            '',
+            membership.user.getDisplayName,
+            membership.user.email,
+            membership.user.profession,
+            membership.user.address,
+            membership.user.city,
+            membership.user.state,
+            membership.user.zip_code,
+            membership.user.nabp_id,
+            membership.user.professional_licenses,
+            membership.user.dob,
+            membership.user.social_security,
+            membership.user.personal_phone,
+            membership.user.employer,
+            membership.user.employer_phone,
+            membership.user.employer_address,
+            membership.user.employer_state,
+            membership.user.employer_city,
+            membership.user.employer_zip,
+            membership.pretest_grade,
+            membership.course_grade,
+            membership.course_attempts,
+            membership.passed_on,
+            membership.minutes_spent
+          ]
+        end
+
+        csv << []
+      end
+    end
+  end
+
   # WARNING: this is slow so...
   # TODO: Optimize
   def demographics
@@ -28,7 +97,7 @@ class Admin::DashboardController < ApplicationController
 
     respond_to do |format|
       format.html
-      format.csv { send_data (@memberships.to_csv + @courses.to_csv) }
+      format.csv { render text: demographics_csv(@courses, @memberships) }
     end
   end
 
