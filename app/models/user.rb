@@ -4,7 +4,7 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
-  has_many :user_memberships
+  has_many :user_memberships, dependent: :destroy
   has_many :courses, :through => :user_memberships
 
   validates :email, uniqueness: true
