@@ -31,7 +31,7 @@
       <th>Minutes Spent</th>
     </thead>
     <tbody>
-      <% (@memberships.where(course_id: course.id).sort_by { |m| m.id }).each do |membership| %>
+      <% (@memberships.where(course_id: course.id).where.not(user_id:'').sort_by { |m| m.id }).each do |membership| %>
         <tr>
           <td><%= membership.user.getDisplayName %></td>
           <td><%= membership.user.email %></td>
