@@ -1,0 +1,20 @@
+<h2 class="text-center login-title">User Reset</h2>
+
+<% if flash[:error] %>
+  <div class="alert alert-danger"><strong>Error: </strong><%= flash[:error] %></div>
+<% end %>
+
+<% if flash[:success] %>
+  <div class="alert alert-success"><%= flash[:success] %></div>
+<% end %>
+
+<h3 class="">Reset Course Attempts</h2>
+<%= form_tag admin_user_reset_attempts_path do %>
+  <%= label_tag :email %><br />
+  <%= email_field_tag :email, params[:email], autofocus: true, placeholder: "Email", class: "login-field-cluster form-control" %>
+  <%= select_tag :course_id, options_from_collection_for_select(Course.all.sort_by { |c| c.title }, :id, :title) %>
+
+  <div class="actions">
+    <%= submit_tag "Reset Attempts", class: "btn btn-danger" %>
+  </div>
+<% end %>

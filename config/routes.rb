@@ -12,6 +12,8 @@ Rails.application.routes.draw do
     post '/join_requests/approve', to: 'dashboard#approve_member'
     get '/certificates', to: 'dashboard#display_passed_users'
     get '/demographics', to: 'dashboard#demographics'
+    get '/user_reset', to: 'dashboard#reset_user'
+    post '/user_reset/attempts', to: 'dashboard#reset_user_attempts'
   end
 
   namespace :admin do

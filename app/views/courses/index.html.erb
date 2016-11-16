@@ -4,7 +4,7 @@
 
 <table class="courses-table">
   <tbody>
-    <% @courses.each do |course| %>
+    <% @courses.sort_by { |c| c.title }.each do |course| %>
       <tr>
         <td><%= link_to course.title, course %></td>
         <% if current_user && current_user.admin %>

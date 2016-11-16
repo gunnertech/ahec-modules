@@ -1,6 +1,32 @@
 class Admin::DashboardController < ApplicationController
   before_filter :authorize_admin
 
+  def reset_user
+  end
+
+  def reset_user_attempts
+    user = User.where(email: params[:email])
+
+    if user.size < 1
+      redirect_to admin_user_reset_path, :flash => { :error => "User with that email does not exist!" }
+      return
+    end
+
+    user = user.first
+    membership = UserMembership.where(user_id: user.id, course_id: (params[:course_id] || -1))
+
+    if membership.size < 1
+      redirect_to admin_user_reset_path, :flash => { :error => "User has not registered for that course" }
+      return
+    end
+
+    membership = membership.first
+    membership.course_attempts = 0
+    membership.save
+
+    redirect_to admin_user_reset_path, :flash => { :success => "User attempts successfully reset" }
+  end
+
   def join_requests
     # Requests that need to be reviewed
     @memberships = UserMembership.where(admin_approved: false)
