@@ -1,15 +1,57 @@
 <% if current_user.getMembershipFor(@course).didUserPassCourse? %>
-  <h1 class="text-center">Congratulations! You have passed the course - your certificate can be claimed by pressing &quot;Next&quot; below.</h1>
-  <h2>Please Scroll Down to find the Next button</h2>
-  <div class="text-center">
-    <iframe class="quiz-completed-survey" src="https://docs.google.com/forms/d/16pzykdHpGsXUSUnaidRiWOZ7huXkjBrHIdVCt0Gync8/viewform?embedded=true" width="760" height="1500" frameborder="0" marginheight="0" marginwidth="0">Loading...</iframe>
-    <%= link_to 'Next', certificate_course_url(:format => :pdf), class: 'btn btn-primary'%>
+  <h1>Congratulations! You passed!</h1> 
+  <h3>Scroll down and click "next" to claim your certificate</h1>
+  <div class="row">
+    <div class="col-md-6 col-sm-12">
+      <h3>Answers</h3>
+      <% answers = JSON.parse(@course.question_json)["answers"] %>
+      <% JSON.parse(@course.question_json)["questions"].each_with_index do |question, questionIndex| %>
+        <div class="row">
+          <div class="col-xs-12">
+            <label><%= question["title"] %></label><br />
+            <% question["choices"].each_with_index do |choice, choiceIndex| %>
+              <input disabled="disabled" class="radio-inline disabled" type="radio" <%= answers[questionIndex] == choiceIndex ? 'checked="checked"' : '' %> name="question-<%= questionIndex %>" value="<%= choiceIndex + 1 %>">
+                <%= choice %>
+              </input>
+            <% end %>
+            <br /><br />
+          </div>
+        </div>
+      <% end %>
+    </div>
+    <div class="col-md-6 col-sm-12">
+      <iframe class="quiz-completed-survey embed-responsive-item" src="https://docs.google.com/forms/d/16pzykdHpGsXUSUnaidRiWOZ7huXkjBrHIdVCt0Gync8/viewform?embedded=true&amp;entry.1662893314=<%= URI.encode(@course.title) %>" width="100%" height="1500" frameborder="0" marginheight="0" marginwidth="0">Loading...</iframe>
+    </div>
   </div>
+
+  <%= link_to 'Next', certificate_course_url(:format => :pdf), class: 'btn btn-primary btn-block'%>
 <% else %>
-  <h1 class="text-center">We are sorry, you didn't pass - remember you have 3 test attempts!</h1>
+  <h1 class="text-center">We are sorry, you didn't pass.</h1>
+  <h3>Remember you have 3 test attempts!</h3>
 
   <% if !current_user.getMembershipFor(@course).canUserRetakeCourse? %>
-    <iframe class="quiz-completed-survey" src="https://docs.google.com/forms/d/16pzykdHpGsXUSUnaidRiWOZ7huXkjBrHIdVCt0Gync8/viewform?embedded=true" width="760" height="1500" frameborder="0" marginheight="0" marginwidth="0">Loading...</iframe>
+    <div class="row">
+      <div class="col-md-6 col-sm-12">
+        <h3>Answers</h3>
+        <% answers = JSON.parse(@course.question_json)["answers"] %>
+        <% JSON.parse(@course.question_json)["questions"].each_with_index do |question, questionIndex| %>
+          <div class="row">
+            <div class="col-xs-12">
+              <label><%= question["title"] %></label><br />
+              <% question["choices"].each_with_index do |choice, choiceIndex| %>
+                <input disabled="disabled" class="radio-inline disabled" type="radio" <%= answers[questionIndex] == choiceIndex ? 'checked="checked"' : '' %> name="question-<%= questionIndex %>" value="<%= choiceIndex + 1 %>">
+                  <%= choice %>
+                </input>
+              <% end %>
+              <br /><br />
+            </div>
+          </div>
+        <% end %>
+      </div>
+      <div class="col-md-6 col-sm-12">
+        <iframe class="quiz-completed-survey embed-responsive-item" src="https://docs.google.com/forms/d/16pzykdHpGsXUSUnaidRiWOZ7huXkjBrHIdVCt0Gync8/viewform?embedded=true&amp;entry.1662893314=<%= URI.encode(@course.title) %>" width="100%" height="1500" frameborder="0" marginheight="0" marginwidth="0">Loading...</iframe>
+      </div>
+    </div>
   <% end %>
 
   <div class="text-center">

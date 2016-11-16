@@ -66,14 +66,16 @@ Rails.application.configure do
 
   config.action_mailer.default_url_options = { :host => "courses.arealahec.org" }
   config.action_mailer.delivery_method = :smtp
+
+  
   config.action_mailer.smtp_settings = {
-      :address   => "smtp.sendgrid.net",
-      :port      => 587, # ports 587 and 2525 are also supported with STARTTLS
-      :enable_starttls_auto => true, # detects and uses STARTTLS
-      :user_name => ENV["SENDGRID_USERNAME"],
-      :password  => ENV["SENDGRID_PASSWORD"], # SMTP password is any valid API key, when user_name is "apikey".
-      :authentication => :plain,
-      :domain => 'heroku.com', # your domain to identify your server when connecting
+    :address        => 'smtp.sendgrid.net',
+    :port           => '587',
+    :authentication => :plain,
+    :user_name      => ENV['SENDGRID_USERNAME'],
+    :password       => ENV['SENDGRID_PASSWORD'],
+    :domain         => 'heroku.com',
+    :enable_starttls_auto => true 
   }
 
   # Enable locale fallbacks for I18n (makes lookups for any locale fall back to

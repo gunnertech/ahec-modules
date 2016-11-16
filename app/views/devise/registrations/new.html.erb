@@ -11,7 +11,7 @@
     <%= f.text_field :last_name, placeholder: "Last Name", class: "login-field-cluster form-control" %>
 
     <%= f.label :date_of_birth %><br />
-    <%= f.date_field :dob, class: "login-field-cluster form-control" %>
+    <%= f.date_select :dob, class: "login-field-cluster form-control", order: [:month, :day, :year], start_year: 1900 %><br /><br />
 
     <%= f.label :email %><br />
     <%= f.email_field :email,  placeholder: "Email", class: "login-field-cluster form-control" %>
@@ -64,8 +64,8 @@
 
     <%= f.label :profession %><br />
     <% professions_array = ["", "Pharmacist", "Physician", "Physician Assistant", "Registered Nurse", "Respiratory", "Social Worker", "Other"] %>
-    <%= f.select :profession, options_for_select(professions_array, 0) %>
-    
+    <%= f.select :profession, options_for_select(professions_array, 0), {}, class: "form-control" %>
+
     <%= f.submit "Sign up", class: "btn btn-lg btn-primary btn-block" %>
 
     <%= render "devise/shared/links" %>
