@@ -9,10 +9,13 @@
 <% end %>
 
 <h3 class="">Reset Course Attempts</h2>
+<br />
 <%= form_tag admin_user_reset_attempts_path do %>
   <%= label_tag :email %><br />
   <%= email_field_tag :email, params[:email], autofocus: true, placeholder: "Email", class: "login-field-cluster form-control" %>
-  <%= select_tag :course_id, options_from_collection_for_select(Course.all.sort_by { |c| c.title }, :id, :title) %>
+  <%= select_tag :course_id, options_from_collection_for_select(Course.all.sort_by { |c| c.title }, :id, :title), class: "form-control" %>
+
+  <br />
 
   <div class="actions">
     <%= submit_tag "Reset Attempts", class: "btn btn-danger" %>
