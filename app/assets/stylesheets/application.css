@@ -17,6 +17,7 @@
 .ahec-body {
   padding: 0 10%;
   padding-bottom: 50px;
+  padding-top: 75px;
   margin: 0 auto;
 }
 
@@ -44,4 +45,12 @@
     font-size: 12px;
     list-style: square; 
   }
+}
+
+legend {
+  padding-bottom: 10px;
+}
+
+fieldset { 
+  margin: 15px 0 20px 0;
 }

@@ -3,6 +3,12 @@
 
   <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
     <div class="account-wall">
+      <% if f.object.errors.any? %>
+        <% f.object.errors.full_messages.each do |msg| %>
+        <div class="alert alert-danger"><%= msg %></div>
+        <% end %>
+      <% end %>
+
       <%= f.label :email %><br />
       <%= f.email_field :email, autofocus: true, placeholder: "Email", class: "login-field-cluster form-control" %>
 
@@ -22,6 +28,6 @@
     </div>
   <% end %>
   <a href="<%= new_user_registration_path %>" id="sign-up-button" class="btn btn-primary btn-lg" role="button">Sign Up</a>
-  <a href="<%= new_user_password_path %>" id="forgot-password-button" class="btn btn-primary btn-lg" role="button">Forgot your password?</a>
+  <a href="<%= new_user_password_path %>" id="forgot-password-button" class="btn btn-primary btn-lg" role="button">Reset Password</a>
 
 </div>

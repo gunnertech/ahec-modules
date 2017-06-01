@@ -1,7 +1,12 @@
 <div id="login-form">
   <h2 class="text-center login-title">Forgot your Password?</h2>
   <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f| %>
-    <%= devise_error_messages! %>
+
+    <% if resource.errors.any? %>
+      <% resource.errors.full_messages.each do |msg| %>
+        <div class="alert alert-danger"><%= msg %></div>
+      <% end %>
+    <% end %>
 
     <%= f.label :email %><br />
     <%= f.email_field :email,  placeholder: "Email", autofocus: true, class: "login-field-cluster form-control" %>
@@ -9,7 +14,7 @@
     <%= f.submit "Send me reset password instructions", class: "btn btn-lg btn-primary btn-block" %>
 
     <%= render "devise/shared/links" %>
+  <% end %>
 </div>
-<% end %>
 
 

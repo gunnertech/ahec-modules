@@ -1,9 +1,18 @@
 <h2 class="text-center">My Account</h2>
+      <% if flash[:error].present? %>
+        <div id="error_explanation">
+          <p><%= flash[:error] %></p>
+        </div>
+      <% end %>
 
 <fieldset>
   <legend>Edit Information</legend>
   <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
-    <%= devise_error_messages! %>
+    <% if resource.errors.any? %>
+      <% resource.errors.full_messages.each do |msg| %>
+      <div class="alert alert-danger"><%= msg %></div>
+      <% end %>
+    <% end %>
 
     <div class="field">
       <%= f.label :email %><br />
@@ -118,8 +127,66 @@
 </fieldset>
 
 <fieldset>
+  <legend>Wallet</legend>
+
+  <div id="error_explanation" class="alert alert-danger" style="display:none">
+  </div>
+
+  <h4><strong>Your Wallet's Balance: $<%= '%.2f' % @user.balance %></strong></h4>
+  <br />
+
+  <%= form_tag charges_path, id: "paymentForm" do %>
+    <%= label_tag :amount, 'Add to Wallet: ' %>
+    <div class="input-group"> 
+      <span class="input-group-addon">$</span>
+      <input type="number" value="0.00" min="0" step="0.01" class="form-control currency" id="amountInput" name="amount" />
+    </div> 
+    <%= hidden_field_tag :stripeToken %>
+    <br />
+    <%= button_tag "Add Funds", class: "btn btn-success", id: "paymentButton" %>
+  <% end %>
+
+  <script src="https://checkout.stripe.com/checkout.js"></script>
+  <script>
+  var handler = StripeCheckout.configure({
+    key: '<%= Rails.configuration.stripe[:publishable_key] %>',
+    locale: 'auto',
+    name: 'AHEC Modules',
+    description: 'AHEC Modules Wallet Transfer',
+    token: function(token) {
+      $('input#stripeToken').val(token.id);
+      $('#paymentForm').submit();
+    }
+  });
+
+  $('#paymentButton').on('click', function(e) {
+    e.preventDefault();
+
+    var amount = $('#amountInput').val();
+
+    amount = amount.replace(/\$/g, '').replace(/\,/g, '')
+    amount = parseFloat(amount);
+
+    if (isNaN(amount)) {
+      $('#error_explanation').html('Please enter a valid amount in USD ($).');
+      $('#error_explanation').show();
+    } else if (amount < 5.00) {
+      $('#error_explanation').html('You must add at least $5.');
+      $('#error_explanation').show();
+    } else {
+      amount = amount * 100; // Needs to be an integer!
+      handler.open({
+        amount: Math.round(amount)
+      });
+    }
+  });
+  </script>
+ 
+</fieldset>
+
+<fieldset>
   <legend>Cancel my account</legend>
-  <p>Unhappy? <%= button_to "Cancel my account", registration_path(resource_name), data: { confirm: "Are you sure?" }, method: :delete, class: "btn btn-danger" %></p>
+  <%= button_to "Cancel my account", registration_path(resource_name), data: { confirm: "Are you sure?" }, method: :delete, class: "btn btn-danger" %>
 </fieldset>
 
 <div class="text-center">

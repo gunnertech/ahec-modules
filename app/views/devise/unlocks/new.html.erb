@@ -1,7 +1,11 @@
 <h2>Resend unlock instructions</h2>
 
 <%= form_for(resource, as: resource_name, url: unlock_path(resource_name), html: { method: :post }) do |f| %>
-  <%= devise_error_messages! %>
+  <% if resource.errors.any? %>
+    <% resource.errors.full_messages.each do |msg| %>
+    <div class="alert alert-danger"><%= msg %></div>
+    <% end %>
+  <% end %>
 
   <div class="field">
     <%= f.label :email %><br />

@@ -1,7 +1,6 @@
-<p id="notice"><%= notice %></p>
-
 <h1 class="text-center"><%= @course.title %></h1>
-<p>
+<span class="float-left course-cost"><%= 'This Course Costs: $%.2f' % @course.cost %></span>
+<p class="course-description">
   <% if @course.description == '' %>
     No Description
   <% else %>

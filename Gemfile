@@ -16,11 +16,20 @@ gem "therubyracer", "0.12.2"
 gem "twitter-bootstrap-rails", "3.2.0"
 gem "uglifier", "2.7.2"
 gem "paperclip"
+gem 'stripe'
 gem 'aws-sdk', '~> 1.6'
 gem "wicked_pdf"
 gem 'wkhtmltopdf-binary'
 
+group :test do
+end
+
 group :development do
+  gem 'dotenv-rails'
+  gem "guard", "2.2.2", require: false
+  gem "guard-livereload", require: false
+  gem "rack-livereload"
+  gem "rb-fsevent", require: false
   gem "better_errors", "0.8.0"
   gem "binding_of_caller", "0.7.1"
   gem "foreman", "0.63.0"

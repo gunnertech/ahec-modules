@@ -65,7 +65,16 @@ class CoursesController < ApplicationController
 
   # POST /courses/1/register
   def register
-    current_user.registerFor(@course)
+    if current_user.balance >= @course.cost
+      UserMembership.where(user_id: current_user.id, course_id: @course.id).first_or_create(user_id: current_user.id, course_id: @course.id)
+      current_user.balance -= @course.cost
+      current_user.save
+      flash[:notice] = "You have been successfully registered!"
+      redirect_to course_path(@course)
+    else
+      flash[:error] = "You do not have sufficient funds for this course."
+      redirect_to course_path(@course)
+    end
   end
 
   # POST /courses/1/quiz
@@ -136,6 +145,6 @@ class CoursesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def course_params
-      params.require(:course).permit(:title, :description, :video_url, :minimum_score, :certificate_token, :question_json, :minimum_time_spent, youtube_video_ids_attributes: [:id, :video_id, :_destroy], course_general_attachments_attributes: [:id, :document, :description, :_destroy], video_uploads_attributes: [:id, :hosted_url, :_destroy])
+      params.require(:course).permit(:title, :description, :video_url, :minimum_score, :certificate_token, :question_json, :cost, :minimum_time_spent, youtube_video_ids_attributes: [:id, :video_id, :_destroy], course_general_attachments_attributes: [:id, :document, :description, :_destroy], video_uploads_attributes: [:id, :hosted_url, :_destroy])
     end
 end

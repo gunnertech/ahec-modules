@@ -20,6 +20,8 @@ Rails.application.routes.draw do
     get 'dashboard/index'
   end
 
+  resources :charges
+
   resources :courses do
     member do
       post '/quiz', to: 'courses#grade_quiz'

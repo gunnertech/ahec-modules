@@ -37,10 +37,8 @@
       <% end %>
     <% end %>
     
-    <p class="notice"><%= notice %></p>
-    <p class="alert"><%= alert %></p>
-    
     <div class="ahec-body">
+      <%= render 'application/error_messages' %>
       <%= yield %>
     </div>
 

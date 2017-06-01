@@ -1,35 +1,33 @@
 <%= form_for(setup_course(@course)) do |f| %>
-  <% if @course.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@course.errors.count, "error") %> prohibited this course from being saved:</h2>
-
-      <ul>
-      <% @course.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
-    </div>
-  <% end %>
 
   <div class="field">
     <%= f.label :title %><br>
     <%= f.text_field :title, class: "form-control" %>
   </div>
+
   <div class="field">
     <%= f.label :description %><br>
     <%= f.text_area :description, class: "form-control" %>
   </div>
+
   <div class="field">
     <%= f.label :certificate_token %><br>
     <%= f.text_field :certificate_token, class: "form-control" %>
   </div>
+
   <div class="field">
     <%= f.label :minimum_score, "Minimum Passing Score" %><br>
     <%= f.text_field :minimum_score, class: "form-control" %>
   </div>
+
   <div class="field">
     <%= f.label :minimum_time_spent %><br>
     <%= f.text_field :minimum_time_spent, class: "form-control" %>
+  </div>
+
+  <div class="field">
+    <%= f.label :cost, "Cost (in $'s)" %><br>
+    <%= f.text_field :cost, class: "form-control" %>
   </div>
 
   <div id="youtube-ids">
@@ -82,6 +80,7 @@
       <input class="btn btn-primary" id="add-question" type="button" value="Add Question" onclick="addQuestion();"/>
     </div>
   </div>
+
   <div class="actions">
     <%= f.submit "Update Course", class: "btn btn-success" %>
   </div>

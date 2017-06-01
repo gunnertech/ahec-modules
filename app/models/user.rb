@@ -69,12 +69,8 @@ class User < ActiveRecord::Base
     return true
   end
   
-  def registerFor(course)
-    UserMembership.where(:user => self, :course => course).first_or_create(user_id: self.id, course_id: course.id)
-  end
-
   def getMembershipFor(course)
-    return UserMembership.where(course_id: course.id, user_id: self.id).first
+    return UserMembership.where(user_id: self.id, course_id: course.id).first
   end
 
   def get_passed_courses
