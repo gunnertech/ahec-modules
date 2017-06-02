@@ -35,7 +35,7 @@
 
     <div class="course-file-download-links">
       <% for downloadable in @course.course_general_attachments %>
-        <%= link_to ("Download " + downloadable.document_file_name), downloadable.document.url(:original, false) %>
+        <%= link_to ("Download " + downloadable.document_file_name), downloadable.document.url(:original, false), target: "_blank" %>
         <p><%= downloadable.description %></p>
       <% end %>
     </div>
