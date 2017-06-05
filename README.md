@@ -5,3 +5,6 @@
  1. ENV File: You will need a copy of the env file from a Gunner Technology Developer
  1. Run in the root directory: `bundle; rake db:create db:schema:load db:migrate`
  1. Start the server: `rails server`
+## Links
+ * Production: https://courses.arealahec.org/courses
+ * Staging: https://ahec-staging.herokuapp.com
