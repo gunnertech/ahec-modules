@@ -1,5 +1,6 @@
 class CoursesController < ApplicationController
   before_filter :authorize_user
+  before_filter :authorize_admin, except: [:index, :time_spent_update, :register, :grade_quiz, :results, :display_certificate]
 
   before_action :set_course, only: [:show, :quiz, :grade_quiz, :register, :edit, :update, :destroy, :results, :display_certificate, :time_spent_update, :certificate_token]
 
