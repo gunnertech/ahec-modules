@@ -35,7 +35,7 @@ class Admin::DashboardController < ApplicationController
     @courses = @memberships.map { |m| m.course }.compact.uniq { |c| c.id }
   end
 
-  def demographics_csv(courses, memberships)
+  def generate_demographics_csv(courses, memberships)
     CSV.generate do |csv|
       courses.sort_by { |m| m.title }.each do |course|
         csv << [
@@ -104,6 +104,7 @@ class Admin::DashboardController < ApplicationController
     end
   end
 
+  # Note: With the addition of survey_responses this may be optimizable
   # WARNING: this is slow so...
   # TODO: Optimize
   def demographics
@@ -123,7 +124,45 @@ class Admin::DashboardController < ApplicationController
 
     respond_to do |format|
       format.html
-      format.csv { render text: demographics_csv(@courses, @memberships) }
+      format.csv { render text: generate_demographics_csv(@courses, @memberships) }
+    end
+  end
+
+  def survey_responses
+    @memberships = UserMembership.where.not(special_question_response: nil)
+    @courses = Course.where(id: @memberships.map { |m| m.course.id }.compact.uniq)
+
+    respond_to do |format|
+      format.html
+      format.csv { render text: generate_survey_responses_csv(@memberships, @courses) }
+    end
+  end
+
+  def generate_survey_responses_csv(memberships, courses)
+    CSV.generate do |csv|
+      courses.sort_by { |m| m.title }.each do |course|
+        csv << [
+          course.title.to_s,
+          ("Question: " + course.special_question.to_s)
+        ]
+        csv << [
+          '',
+          'Name',
+          'Email',
+          'Response'
+        ]
+
+        (@memberships.select { |m| m.course_id == course.id }.sort_by { |m| m.id }).each do |membership|
+          csv << [
+            '',
+            membership.user.getDisplayName,
+            membership.user.email,
+            membership.special_question_response
+          ]
+        end
+
+        csv << []
+      end
     end
   end
 

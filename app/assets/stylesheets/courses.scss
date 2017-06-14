@@ -1,7 +1,3 @@
-#course_question_editor {
-  display: none;
-}
-
 #course-question-editor {
   margin: 20px 10px;
 
@@ -23,6 +19,10 @@
       margin-top: 5px;
     }
   }
+}
+
+.course-special-question-field {
+  margin: 50px;
 }
 
 #add-question {

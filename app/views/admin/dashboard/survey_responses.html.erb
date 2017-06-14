@@ -1,0 +1,33 @@
+<h1 class="text-center">Survey Responses & Special Question Data</h1>
+
+
+<h3>Course-Specific Special Questions</h2>
+<%= link_to 'Download Special Question Responses (CSV)', admin_survey_responses_path(:format => :csv), class: 'download-button btn btn-primary'%>
+<br />
+
+<% @courses.sort_by { |m| m.title }.each do |course| %>
+  <table class="table table-striped">
+    <caption>
+      Course Title: <%= link_to course.title, course %> 
+      <br />
+      Question: <%= course.special_question %>
+    </caption>
+    <thead>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Response</th>
+    </thead>
+    <tbody>
+      <% (@memberships.select { |m| m.course_id == course.id }.sort_by { |m| m.id }).each do |membership| %>
+        <tr>
+          <td><%= membership.user.getDisplayName %></td>
+          <td><%= membership.user.email %></td>
+          <td><%= membership.special_question_response %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>
+
+<h3>General Survey Questions</h2>
+<iframe id="survey-responses" src="https://docs.google.com/spreadsheets/d/1vDp2PCfPu5tLiUtLrHJvA3TeF086aOUG9TGeI_HqlGU/pubhtml?gid=2060121822&amp;single=true&amp;widget=true&amp;headers=false"></iframe>

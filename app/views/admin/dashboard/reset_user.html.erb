@@ -1,14 +1,6 @@
 <h2 class="text-center login-title">User Reset</h2>
 
-<% if flash[:error] %>
-  <div class="alert alert-danger"><strong>Error: </strong><%= flash[:error] %></div>
-<% end %>
-
-<% if flash[:success] %>
-  <div class="alert alert-success"><%= flash[:success] %></div>
-<% end %>
-
-<h3 class="">Reset Course Attempts</h2>
+<h3>Reset Course Attempts</h2>
 <br />
 <%= form_tag admin_user_reset_attempts_path do %>
   <%= label_tag :email %><br />

@@ -12,6 +12,7 @@ Rails.application.routes.draw do
     post '/join_requests/approve', to: 'dashboard#approve_member'
     get '/certificates', to: 'dashboard#display_passed_users'
     get '/demographics', to: 'dashboard#demographics'
+    get '/survey_responses', to: 'dashboard#survey_responses'
     get '/user_reset', to: 'dashboard#reset_user'
     post '/user_reset/attempts', to: 'dashboard#reset_user_attempts'
   end
@@ -28,10 +29,12 @@ Rails.application.routes.draw do
       post '/time_spent', to: 'courses#time_spent_update'
 
       get :quiz
+      get :survey
       get '/quiz/results', to: 'courses#results'
       get '/certificate', to: 'courses#display_certificate'
 
       post :register
+      post '/survey', to: 'courses#survey_response'
     end
   end
 

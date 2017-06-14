@@ -1,0 +1,17 @@
+<div class="text-center">
+  <h1>Special Course Survey Question</h1> 
+  <% if @membership.didUserPassCourse? %>
+    <i>A response is required in order to view your certificate</i>
+  <% end %>
+</div>
+
+<%= form_for @membership, :method => :post, :url => survey_course_url do |f| %>
+  <hr />
+  <div class="course-special-question-field">
+    <h3 class="text-center course-special-question"><%= @course.special_question %><h2>
+    <%= f.text_field :special_question_response, placeholder: "Your response", class: "form-control" %>
+  </div>
+  <hr />
+
+  <%= f.submit "Submit Response", class: "btn btn-success" %>
+<% end %>

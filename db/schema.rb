@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170517214550) do
+ActiveRecord::Schema.define(version: 20170607212531) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -30,8 +30,8 @@ ActiveRecord::Schema.define(version: 20170517214550) do
   add_index "course_general_attachments", ["course_id"], name: "index_course_general_attachments_on_course_id", using: :btree
 
   create_table "courses", force: :cascade do |t|
-    t.datetime "created_at",                                               null: false
-    t.datetime "updated_at",                                               null: false
+    t.datetime "created_at",                                                       null: false
+    t.datetime "updated_at",                                                       null: false
     t.text     "title"
     t.text     "description"
     t.text     "question_json"
@@ -39,19 +39,21 @@ ActiveRecord::Schema.define(version: 20170517214550) do
     t.integer  "minimum_time_spent",                         default: 0
     t.text     "certificate_token"
     t.decimal  "cost",               precision: 8, scale: 2, default: 0.0
+    t.string   "special_question",                           default: "Opinions?"
   end
 
   create_table "user_memberships", force: :cascade do |t|
     t.integer  "course_id"
     t.integer  "user_id"
-    t.datetime "created_at",                      null: false
-    t.datetime "updated_at",                      null: false
-    t.boolean  "admin_approved",  default: false
-    t.decimal  "course_grade",    default: 0.0
-    t.integer  "course_attempts", default: 0
+    t.datetime "created_at",                                null: false
+    t.datetime "updated_at",                                null: false
+    t.boolean  "admin_approved",            default: false
+    t.decimal  "course_grade",              default: 0.0
+    t.integer  "course_attempts",           default: 0
     t.decimal  "pretest_grade"
-    t.integer  "minutes_spent",   default: 0
+    t.integer  "minutes_spent",             default: 0
     t.date     "passed_on"
+    t.string   "special_question_response"
   end
 
   add_index "user_memberships", ["course_id", "user_id"], name: "index_user_memberships_on_course_id_and_user_id", unique: true, using: :btree

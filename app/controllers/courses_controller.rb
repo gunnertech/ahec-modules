@@ -2,7 +2,8 @@ class CoursesController < ApplicationController
   before_filter :authorize_user
   before_filter :authorize_admin, except: [:index, :time_spent_update, :register, :grade_quiz, :results, :display_certificate]
 
-  before_action :set_course, only: [:show, :quiz, :grade_quiz, :register, :edit, :update, :destroy, :results, :display_certificate, :time_spent_update, :certificate_token]
+  before_action :set_course, only: [:show, :quiz, :grade_quiz, :register, :edit, :update, :destroy, :results, :display_certificate, :time_spent_update, :certificate_token, :survey, :survey_response]
+  before_action :force_immutability_survey_response, only: [:survey, :survey_response]
 
   # GET /courses
   # GET /courses.json
@@ -12,9 +13,8 @@ class CoursesController < ApplicationController
 
   # POST /courses/1/time_spent
   def time_spent_update
-    membership = current_user.getMembershipFor(@course)
-    membership.minutes_spent += 1
-    membership.save!
+    @membership.minutes_spent += 1
+    @membership.save!
     render :text => "Success"
   end
 
@@ -94,11 +94,10 @@ class CoursesController < ApplicationController
     questionCount = (correctAnswers.count > 0) ? correctAnswers.count : 1
 
     score = ((totalCorrect.to_f / questionCount) * 100)
-    membership = current_user.getMembershipFor(@course)
 
     if current_user.isEligibleToTakePretest?(@course)
-      membership.pretest_grade = score
-      membership.save!
+      @membership.pretest_grade = score
+      @membership.save!
 
       if totalCorrect == 0
         flash[:notice] = "You answered no questions correctly"
@@ -110,7 +109,7 @@ class CoursesController < ApplicationController
 
       redirect_to course_path(@course)
     elsif current_user.isEligibleToTakeTest?(@course)
-      membership.setQuizResult(score)
+      @membership.setQuizResult(score)
       redirect_to quiz_results_course_path
     end
   end
@@ -119,11 +118,39 @@ class CoursesController < ApplicationController
   def results
   end
 
-  def display_certificate
-    @membership = current_user.getMembershipFor(@course)
+  # GET /courses/1/survey
+  def survey
+  end
 
+  # POST /courses/1/survey
+  def survey_response
+    response = params["user_membership"]["special_question_response"]
+
+    if not response.present?
+      flash[:error] = "A response is required for the special question."
+      redirect_to survey_course_path
+      return
+    end
+
+    @membership.special_question_response = response
+    @membership.save!
+
+    if @membership.didUserPassCourse?
+      redirect_to certificate_course_path(:format => :pdf)
+    else
+      redirect_to courses_path
+    end
+  end
+
+  def display_certificate
     if not @membership.didUserPassCourse?
       redirect_to courses_path
+      return
+    end
+
+    if not @membership.special_question_response.present?
+      flash[:error] = "A response is required for the special question."
+      redirect_to survey_course_path
       return
     end
 
@@ -142,10 +169,18 @@ class CoursesController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_course
       @course = Course.find(params[:id])
+      @membership = current_user.getMembershipFor(@course)
+    end
+
+    def force_immutability_survey_response
+      if @membership.special_question_response.present?
+        flash[:error] = "You have already responded to the special survey question for this course. Your response cannot be changed."
+        redirect_to courses_path
+      end
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def course_params
-      params.require(:course).permit(:title, :description, :video_url, :minimum_score, :certificate_token, :question_json, :cost, :minimum_time_spent, youtube_video_ids_attributes: [:id, :video_id, :_destroy], course_general_attachments_attributes: [:id, :document, :description, :_destroy], video_uploads_attributes: [:id, :hosted_url, :_destroy])
+      params.require(:course).permit(:title, :description, :video_url, :minimum_score, :certificate_token, :question_json, :cost, :minimum_time_spent, :special_question, :special_question_response, youtube_video_ids_attributes: [:id, :video_id, :_destroy], course_general_attachments_attributes: [:id, :document, :description, :_destroy], video_uploads_attributes: [:id, :hosted_url, :_destroy])
     end
 end

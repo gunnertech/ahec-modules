@@ -1,6 +1,7 @@
-<h1 class="text-center">All Users who have used all 3 test attempts (failed) or simply passed</h1>
-
-<%= link_to 'Download this data', admin_demographics_url(:format => :csv), class: 'btn btn-primary'%>
+<h1 class="text-center">Demographics</h1>
+<em class="text-center">This data is only for all Users who have used all 3 test attempts (failed) OR passed the course</em>
+<br />
+<%= link_to 'Download Demographics Data (CSV)', admin_demographics_url(:format => :csv), class: 'download-button btn btn-primary' %>
 
 <% @courses.sort_by { |m| m.title }.each do |course| %>
   <table class="table table-striped">
@@ -67,20 +68,3 @@
     </tbody>
   </table>
 <% end %>
-
-<iframe id="survey-responses" src="https://docs.google.com/spreadsheets/d/1vDp2PCfPu5tLiUtLrHJvA3TeF086aOUG9TGeI_HqlGU/pubhtml?gid=2060121822&amp;single=true&amp;widget=true&amp;headers=false"></iframe>
-
-<style type="text/css">
-    #survey-responses {
-      width: 100%;
-      height: 850px;
-    }
-
-    table tr td {
-      padding-right: 5px;
-    }
-
-    table tr th {
-      padding-right: 5px;
-    }
-</style>

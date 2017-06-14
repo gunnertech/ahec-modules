@@ -1,5 +1,4 @@
 <%= form_for(setup_course(@course)) do |f| %>
-
   <div class="field">
     <%= f.label :title %><br>
     <%= f.text_field :title, class: "form-control" %>
@@ -79,6 +78,11 @@
     <div id="course-question-editor">
       <input class="btn btn-primary" id="add-question" type="button" value="Add Question" onclick="addQuestion();"/>
     </div>
+  </div>
+
+  <div class="field">
+    <%= f.label :special_question, "Special Course-Specific Survey Question" %><br>
+    <%= f.text_field :special_question, class: "form-control" %>
   </div>
 
   <div class="actions">

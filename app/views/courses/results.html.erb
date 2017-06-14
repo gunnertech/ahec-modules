@@ -19,15 +19,9 @@
         </div>
       <% end %>
     </div>
-    <div class="col-md-6 col-sm-12">
-      <iframe class="quiz-completed-survey embed-responsive-item" src="https://docs.google.com/forms/d/16pzykdHpGsXUSUnaidRiWOZ7huXkjBrHIdVCt0Gync8/viewform?embedded=true&amp;entry.1662893314=<%= URI.encode(@course.title) %>" width="100%" height="1500" frameborder="0" marginheight="0" marginwidth="0">Loading...</iframe>
-    </div>
   </div>
-
-  <%= link_to 'Next', certificate_course_url(:format => :pdf), class: 'btn btn-primary btn-block'%>
 <% else %>
   <h1 class="text-center">We are sorry, you didn't pass.</h1>
-  <h3>Remember you have 3 test attempts!</h3>
 
   <% if !current_user.getMembershipFor(@course).canUserRetakeCourse? %>
     <div class="row">
@@ -48,13 +42,16 @@
           </div>
         <% end %>
       </div>
-      <div class="col-md-6 col-sm-12">
-        <iframe class="quiz-completed-survey embed-responsive-item" src="https://docs.google.com/forms/d/16pzykdHpGsXUSUnaidRiWOZ7huXkjBrHIdVCt0Gync8/viewform?embedded=true&amp;entry.1662893314=<%= URI.encode(@course.title) %>" width="100%" height="1500" frameborder="0" marginheight="0" marginwidth="0">Loading...</iframe>
-      </div>
+    </div>
+  <% else %>
+    <h3>Remember you have 3 test attempts!</h3>
+    <div class="text-center">
+      <%= link_to 'Back', courses_path, class: 'btn btn-primary'%>
     </div>
   <% end %>
+<% end %>
 
-  <div class="text-center">
-    <%= link_to 'Back', courses_path, class: 'btn btn-primary'%>
-  </div>
+<% if !current_user.getMembershipFor(@course).canUserRetakeCourse? %>
+  <iframe class="quiz-completed-survey embed-responsive-item" src="https://docs.google.com/forms/d/16pzykdHpGsXUSUnaidRiWOZ7huXkjBrHIdVCt0Gync8/viewform?embedded=true&amp;entry.1662893314=<%= URI.encode(@course.title) %>" width="100%" height="1500" frameborder="0" marginheight="0" marginwidth="0">Loading...</iframe>
+  <%= link_to 'Next', survey_course_url, class: 'btn btn-primary btn-block'%>
 <% end %>
