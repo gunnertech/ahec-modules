@@ -1,6 +1,6 @@
 class CoursesController < ApplicationController
   before_filter :authorize_user
-  before_filter :authorize_admin, except: [:show, :index, :time_spent_update, :register, :grade_quiz, :results, :display_certificate, :survey, :survey_response]
+  before_filter :authorize_admin, only: [:new, :create, :edit, :update, :destroy]
 
   before_action :set_course, only: [:show, :quiz, :grade_quiz, :register, :edit, :update, :destroy, :results, :display_certificate, :time_spent_update, :certificate_token, :survey, :survey_response]
   before_action :force_immutability_survey_response, only: [:survey, :survey_response]
