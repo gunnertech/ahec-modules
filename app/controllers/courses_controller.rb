@@ -132,7 +132,9 @@ class CoursesController < ApplicationController
       return
     end
 
+    p response
     @membership.special_question_response = response
+    p @membership
     @membership.save!
 
     if @membership.didUserPassCourse?
