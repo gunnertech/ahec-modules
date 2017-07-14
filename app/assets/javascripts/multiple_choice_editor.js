@@ -27,7 +27,7 @@ function addQuestion(whichQuestions) {
   }
 }
 
-function addChoice(whichQuestions, questionNumber) {
+function addChoice(whichQuestions, questionNumber, isNew) {
   if (whichQuestions === "survey-question") {
     addChoice_impl(whichQuestions, QuizRollover, questionNumber, isNew);
   } else if (whichQuestions === "course-question") {
@@ -45,7 +45,7 @@ function addQuestion_impl(whichQuestions, questionRollover) {
 
   if (whichQuestions === "course-question") {
   newQuestion += "<input class=\"btn btn-primary\" id=\"" + whichQuestions + "-new-" + questionRollover.question + "-add-choice-button\" type=\"button\" value=\"Add Choice\" " +
-        "onclick=\"addChoice(\'" + whichQuestions + "\', " + questionRollover.question + ");\"/>";
+        "onclick=\"addChoice(\'" + whichQuestions + "\', " + questionRollover.question + ", true);\"/>";
   }
 
   newQuestion += "</fieldset>";
@@ -139,7 +139,7 @@ $(function() {
       // The Add Choice Button and End of the Question HTML
         newElement += "<input id=\"course-question-" + i + "-add-choice-button\" class=\"btn btn-primary\"" +
                        "type=\"button\" value=\"Add Choice\" " +
-                       "onclick=\"addChoice(\'course-question\', " + i + ");\"/>";
+                       "onclick=\"addChoice(\'course-question\', " + i + ", false);\"/>";
       newElement += "</fieldset>";
 
       // Place in the DOM
