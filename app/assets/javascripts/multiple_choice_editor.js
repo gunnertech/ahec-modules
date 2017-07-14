@@ -29,9 +29,9 @@ function addQuestion(whichQuestions) {
 
 function addChoice(whichQuestions, questionNumber) {
   if (whichQuestions === "survey-question") {
-    addChoice_impl(whichQuestions, QuizRollover, questionNumber);
+    addChoice_impl(whichQuestions, QuizRollover, questionNumber, isNew);
   } else if (whichQuestions === "course-question") {
-    addChoice_impl(whichQuestions, SurveyRollover, questionNumber);
+    addChoice_impl(whichQuestions, SurveyRollover, questionNumber, isNew);
   }
 }
 
@@ -53,7 +53,7 @@ function addQuestion_impl(whichQuestions, questionRollover) {
   $("#" + whichQuestions + "-editor").append(newQuestion);
 }
 
-function addChoice_impl(whichQuestions, questionRollover, questionNumber) {
+function addChoice_impl(whichQuestions, questionRollover, questionNumber, isNew) {
   questionRollover.choice += 1;
 
   var newChoiceDiv = "<div id=\"" + whichQuestions + "-" + questionNumber + "-choice-new-" + questionRollover.choice + "\">";
