@@ -73,16 +73,19 @@
   </div>
 
   <div class="field">
-    <%= f.label :questions %><br>
+    <%= f.label :questions, "Course Questions" %><br>
     <%= f.text_area :question_json %>
     <div id="course-question-editor">
-      <input class="btn btn-primary" id="add-question" type="button" value="Add Question" onclick="addQuestion();"/>
+      <input class="btn btn-primary" id="add-question" type="button" value="Add Question" onclick="addQuestion('course-question');"/>
     </div>
   </div>
 
   <div class="field">
-    <%= f.label :special_question, "Special Course-Specific Survey Question" %><br>
-    <%= f.text_field :special_question, class: "form-control" %>
+    <%= f.label :special_questions, "Special Course-Specific Survey Questions" %><br>
+    <%= f.text_area :special_questions, class: "form-control" %>
+    <div id="survey-question-editor">
+      <input class="btn btn-primary" id="add-question" type="button" value="Add Question" onclick="addQuestion('survey-question');"/>
+    </div>
   </div>
 
   <div class="actions">

@@ -2,117 +2,172 @@
 // for 1 small part of the entire app, and I don't want each button press to 
 // refrsh the page...
 
-// TODO:  
-// - Validation
-// - Commentify
-// - Select radio of correct answer in deserialization
-
 function getYoutubeIdFromUrl(url){
   var regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#\&\?]*).*/;
   var match = url.match(regExp);
   return (match&&match[7].length==11)? match[7] : url;
 }
 
-var questionRollover = 0;
-function addQuestion() {
-  questionRollover += 1;
+var QuizRollover = {
+  question: 0,
+  choice: 0
+};
 
-  var newQuestion = "<fieldset id=\"question-new-" + questionRollover + "\">";
-  newQuestion += "<input type=\"text\"/>";
-  newQuestion += "<input class=\"btn pull-right btn-danger\" type=\"button\" value=\"Delete Question\" " +
-    "onclick=\"deleteQuestion(" + questionRollover + ", true);\"/>";
-  newQuestion += "<input class=\"btn btn-primary\" id=\"question-new-" + questionRollover + "-add-choice-button\" type=\"button\" value=\"Add Choice\" " +
-        "onclick=\"addChoice(" + questionRollover + ", true);\"/>";
-  newQuestion += "</fieldset>";
+var SurveyRollover = {
+  question: 0,
+  choice: 0
+};
 
-  $("#course-question-editor").append(newQuestion);
+// My stupid way of implementing pointers in JS quickly... Stupid I know.
+function addQuestion(whichQuestions) {
+  if (whichQuestions === "survey-question") {
+    addQuestion_impl(whichQuestions, QuizRollover);
+  } else if (whichQuestions === "course-question") {
+    addQuestion_impl(whichQuestions, SurveyRollover);
+  }
 }
 
-var choiceRollover = 0;
-function addChoice(questionNumber, isNew) {
-  choiceRollover += 1;
+function addChoice(whichQuestions, questionNumber) {
+  if (whichQuestions === "survey-question") {
+    addChoice_impl(whichQuestions, QuizRollover, questionNumber);
+  } else if (whichQuestions === "course-question") {
+    addChoice_impl(whichQuestions, SurveyRollover, questionNumber);
+  }
+}
 
-  var newChoiceDiv = "";
-  newChoiceDiv += "<div id=\"question-" + questionNumber + "-choice-new-" + choiceRollover + "\">";
+function addQuestion_impl(whichQuestions, questionRollover) {
+  questionRollover.question += 1;
+
+  var newQuestion = "<fieldset id=\"" + whichQuestions + "-new-" + questionRollover.question + "\">";
+  newQuestion += "<input type=\"text\"/>";
+  newQuestion += "<input class=\"btn pull-right btn-danger\" type=\"button\" value=\"Delete Question\" " +
+    "onclick=\"deleteQuestion(\'" + whichQuestions + "\', " + questionRollover.question + ", true);\"/>";
+
+  if (whichQuestions === "course-question") {
+  newQuestion += "<input class=\"btn btn-primary\" id=\"" + whichQuestions + "-new-" + questionRollover.question + "-add-choice-button\" type=\"button\" value=\"Add Choice\" " +
+        "onclick=\"addChoice(\'" + whichQuestions + "\', " + questionRollover.question + ");\"/>";
+  }
+
+  newQuestion += "</fieldset>";
+
+  $("#" + whichQuestions + "-editor").append(newQuestion);
+}
+
+function addChoice_impl(whichQuestions, questionRollover, questionNumber) {
+  questionRollover.choice += 1;
+
+  var newChoiceDiv = "<div id=\"" + whichQuestions + "-" + questionNumber + "-choice-new-" + questionRollover.choice + "\">";
   newChoiceDiv += "<input name=\"" + questionNumber + "\" type=\"radio\"/>";
   newChoiceDiv += "<input type=\"text\"/>";
   newChoiceDiv += "<input class=\"btn btn-danger\" type=\"button\" value=\"Delete Choice\" " +
-    "onclick=\"deleteChoice(" + questionNumber + ", " + choiceRollover + ", true);\"/>";
+    "onclick=\"deleteChoice(\'" + whichQuestions + "\', " + questionNumber + ", " + questionRollover.choice + ", true);\"/>";
   newChoiceDiv += "<br /></div>";
 
   if (isNew) {
-    $("#question-new-" + questionNumber + "-add-choice-button").before(newChoiceDiv);
+    $("#" + whichQuestions + "-new-" + questionNumber + "-add-choice-button").before(newChoiceDiv);
   } else {
-    $("#question-" + questionNumber + "-add-choice-button").before(newChoiceDiv);
+    $("#" + whichQuestions + "-" + questionNumber + "-add-choice-button").before(newChoiceDiv);
   }
 }
 
-function deleteQuestion(questionNumber, isNew) {
+function deleteQuestion(whichQuestions, questionNumber, isNew) {
   if (isNew) {
-    $("#question-new-" + questionNumber).remove();
+    $("#" + whichQuestions + "-new-" + questionNumber).remove();
   } else {
-    $("#question-" + questionNumber).remove();
+    $("#" + whichQuestions + "-" + questionNumber).remove();
   }
 }
 
-function deleteChoice(questionNumber, choiceNumber, isNew) {
+
+function deleteChoice(whichQuestions, questionNumber, choiceNumber, isNew) {
   if (isNew) {
-    $("#question-" + questionNumber + "-choice-new-" + choiceNumber).remove();
+    $("#" + whichQuestions + "-" + questionNumber + "-choice-new-" + choiceNumber).remove();
   } else {
-    $("#question-" + questionNumber + "-choice-" + choiceNumber).remove();
+    $("#" + whichQuestions + "-" + questionNumber + "-choice-" + choiceNumber).remove();
   }
 }
+
 
 $(function() {
-  if ($("#course_question_json").length > 0 &&
-      $("#course-question-editor").length > 0) {
-    var editor = $("#course-question-editor");
-    var jsonField = $("#course_question_json");
-    jsonField.hide();
-    editor.show();
+  if (($("#course_question_json").length > 0 &&
+      $("#course-question-editor").length > 0) 
+     ||
+     ($("#special_questions_json").length > 0 &&
+      $("survey-question-editor").length > 0)) {
 
-    // Deserialize existing questions and display them - also set view up
-    var jsonString = jsonField.val() || '{\"questions\":[], \"answers\":[]}';
-    var json = JSON.parse(jsonString);
+    /////////////////////
+    // Setup the views //
+    /////////////////////
 
-    // For each existing question
-    for (var i = 0; i < json["questions"].length; i++) {
-      var question = (json["questions"][i]);
+    // Course Init & Hide
+    var courseEditor = $("#course-question-editor");
+    var courseJsonField = $("#course_question_json");
+    courseJsonField.hide();
+    courseEditor.show();
+
+    // Survey Init & Hide
+    var surveyEditor = $("#survey-question-editor");
+    var surveyJsonField = $("#course_special_questions");
+    surveyJsonField.hide();
+    surveyEditor.show();
+
+    // Parse Json
+    var courseJsonData = JSON.parse(courseJsonField.val() || '{\"questions\":[], \"answers\":[]}');
+    var surveyJsonData = JSON.parse(surveyJsonField.val() || '[\"Opinions?\"]');
+
+    // Course = For each existing question, render them into the view
+    for (var i = 0; i < courseJsonData["questions"].length; i++) {
+      var question = (courseJsonData["questions"][i]);
 
       // Beginning of Question Div (fieldset) + Title
-      var newElement = "<fieldset id=\"question-" + i + "\">";
+      var newElement = "<fieldset id=\"course-question-" + i + "\">";
           newElement += "<input type=\"text\" value=\"" + question.title + "\"/>";
           newElement += "<input class=\"pull-right btn btn-danger\" type=\"button\" value=\"Delete Question\" " +
-                          "onclick=\"deleteQuestion(" + i + ");\"/>";
+                          "onclick=\"deleteQuestion(\'course-question\', " + i + ", 0);\"/>";
 
       // Each Choice of the Question
       for (var j = 0; j < question.choices.length; j++) {
-        newElement += "<div id=\"question-" + i + "-choice-" + j + "\">";
+        newElement += "<div id=\"course-question-" + i + "-choice-" + j + "\">";
           newElement += "<input name=\"" + i + "\" type=\"radio\"/>";
           newElement += "<input type=\"text\" value=\"" + question.choices[j] + "\"/>";
           newElement += "<input class=\"btn btn-danger\" type=\"button\" value=\"Delete Choice\" " +
-                          "onclick=\"deleteChoice(" + i + ", " + j + ");\"/>";
+                          "onclick=\"deleteChoice(\'course-question\', " + i + ", " + j + ", 0);\"/>";
           newElement += "<br />";
         newElement += "</div>";
       }
 
       // The Add Choice Button and End of the Question HTML
-        newElement += "<input id=\"question-" + i + "-add-choice-button\" class=\"btn btn-primary\"" +
+        newElement += "<input id=\"course-question-" + i + "-add-choice-button\" class=\"btn btn-primary\"" +
                        "type=\"button\" value=\"Add Choice\" " +
-                       "onclick=\"addChoice(" + i + ");\"/>";
+                       "onclick=\"addChoice(\'course-question\', " + i + ");\"/>";
       newElement += "</fieldset>";
 
       // Place in the DOM
-      editor.append(newElement);
+      courseEditor.append(newElement);
     }
 
-    // Check the correct answer
-    for (var question = 0; question < json["answers"].length; question++) {
-      var choice = json["answers"][question];
-      var domId = "#question-" + question + "-choice-" + choice;
+    // Checkmark the correct answer
+    for (var question = 0; question < courseJsonData["answers"].length; question++) {
+      var choice = courseJsonData["answers"][question];
+      var domId = "#course-question-" + question + "-choice-" + choice;
 
       $(domId).children("input:radio").prop("checked", true);
     }
+
+    // Now we repeat the process for Survey Questions
+    for (var i = 0; i < surveyJsonData.length; i++) {
+      var question = (surveyJsonData[i]);
+
+      // Beginning of Question Div (fieldset) + Title
+      var newElement = "<fieldset id=\"survey-question-" + i + "\">";
+          newElement += "<input type=\"text\" value=\"" + question + "\"/>";
+          newElement += "<input class=\"pull-right btn btn-danger\" type=\"button\" value=\"Delete Question\" " +
+                          "onclick=\"deleteQuestion(\'survey-question\', " + i + ", 0);\"/>";
+
+      // Place in the DOM
+      surveyEditor.append(newElement);
+    }
+
 
     // Submit Hook
     var submitFormCb = function(e) {
@@ -124,12 +179,12 @@ $(function() {
       });
 
       // Now the serialization on Questions
-      var json = {
+      var newCourseJson = {
         questions: [],
         answers: []
       };
 
-      editor.children().each(function(i, domObj) {
+      courseEditor.children().each(function(i, domObj) {
         var thisElement = $(this);
         var elementId = thisElement.attr('id');
         var question = {
@@ -137,13 +192,12 @@ $(function() {
           choices: []
         };
 
-
         // Only care about the question divs data - not the buttons
-        if (RegExp('^question-(new-)*(\\d+)$').test(elementId)) {
+        if (RegExp('^course-question-(new-)*(\\d+)$').test(elementId)) {
           // Data from the question DOM element - iterate over children of div
           thisElement.children().each(function(childOfDivIndex, domObj) {
             var questionDomObj = $(this);
-            var isQChoice = RegExp('^question-(\\d+)-choice-(new-)*(\\d+)$')
+            var isQChoice = RegExp('^course-question-(\\d+)-choice-(new-)*(\\d+)$')
 
             // This child element is a multiple choice option
             if (isQChoice.test(questionDomObj.attr('id'))) {
@@ -153,7 +207,7 @@ $(function() {
                 // This is the radio box - is this the correct answer?
                 if (input[0].type === "radio") {
                   if (input.is(":checked")) {
-                    json.answers.push(childOfDivIndex - 2);
+                    newCourseJson.answers.push(childOfDivIndex - 2);
                   }
                 }
                 // This is the actual text of the choice
@@ -169,12 +223,37 @@ $(function() {
           });
 
           // The question data is formed lets append it
-          json.questions.push(question);
+          newCourseJson.questions.push(question);
         }
       });
 
       // Set the textfield to have the generated JSON and let the server save it
-      jsonField.val(JSON.stringify(json));
+      courseJsonField.val(JSON.stringify(newCourseJson));
+
+      var questionsJson = [];
+
+      surveyEditor.children().each(function(i, domObj) {
+        var thisElement = $(this);
+        var elementId = thisElement.attr('id');
+
+        // Only care about the question divs data - not the buttons
+        if (RegExp('^survey-question-(new-)*(\\d+)$').test(elementId)) {
+          // Data from the question DOM element - iterate over children of div
+          thisElement.children().each(function(childOfDivIndex, domObj) {
+            var questionTitle = $(this);
+
+            // If is the title of the Question
+            if (questionTitle.is("input:text")) {
+              questionsJson.push(questionTitle.val());
+            }
+          });
+        }
+      });
+
+
+      // Set the textfield to have the generated JSON and let the server save it
+      surveyJsonField.val(JSON.stringify(questionsJson));
+      console.log(surveyJsonField.val());
     };
 
     $("form").submit(submitFormCb);
@@ -185,3 +264,4 @@ $('.quiz-completed-survey').load(function () {
     $(this).height($(this).contents().height());
     $(this).width($(this).contents().width());
 });
+

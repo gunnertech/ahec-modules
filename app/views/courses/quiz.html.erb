@@ -11,10 +11,10 @@
   <!-- Generate a Quiz -->
   <div class="quiz-questions">
     <% JSON.parse(@course.question_json)["questions"].each_with_index do |question, questionIndex| %>
-      <fieldset id="question-<%= questionIndex %>">
+      <fieldset id="course-question-<%= questionIndex %>">
         <legend><%= question["title"] %></legend>
         <% question["choices"].each_with_index do |choice, choiceIndex| %>
-          <input type="radio" name="question-<%= questionIndex %>" value="<%= choiceIndex + 1 %>">
+          <input type="radio" name="course-question-<%= questionIndex %>" value="<%= choiceIndex + 1 %>">
           <%= choice %>
           </input>
         <% end %>

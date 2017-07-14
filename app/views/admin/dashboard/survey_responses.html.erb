@@ -10,7 +10,7 @@
     <caption>
       Course Title: <%= link_to course.title, course %> 
       <br />
-      Question: <%= course.special_question %>
+      Questions: <%= course.special_questions %>
     </caption>
     <thead>
       <th>Name</th>
@@ -22,7 +22,7 @@
         <tr>
           <td><%= membership.user.getDisplayName %></td>
           <td><%= membership.user.email %></td>
-          <td><%= membership.special_question_response %></td>
+          <td><%= membership.special_questions_responses %></td>
         </tr>
       <% end %>
     </tbody>

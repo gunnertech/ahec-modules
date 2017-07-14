@@ -84,7 +84,7 @@ class CoursesController < ApplicationController
     totalCorrect = 0
 
     (0..correctAnswers.count - 1).each do |n|
-      userAnswer = params["question-" + n.to_s].to_i
+      userAnswer = params["course-question-" + n.to_s].to_i
 
       if userAnswer === (correctAnswers[n] + 1)
         totalCorrect += 1
@@ -124,17 +124,17 @@ class CoursesController < ApplicationController
 
   # POST /courses/1/survey
   def survey_response
-    response = params["user_membership"]["special_question_response"]
+    responses = params["survey_question"]
 
-    if not response.present?
-      flash[:error] = "A response is required for the special question."
-      redirect_to survey_course_path
-      return
-    end
+    responses.each { |response|
+      if not response.present?
+        flash[:error] = "A response is required for the special question."
+        redirect_to survey_course_path
+        return
+      end
+    }
 
-    p response
-    @membership.special_question_response = response
-    p @membership
+    @membership.special_questions_responses = responses
     @membership.save!
 
     if @membership.didUserPassCourse?
@@ -150,7 +150,7 @@ class CoursesController < ApplicationController
       return
     end
 
-    if not @membership.special_question_response.present?
+    if not @membership.special_questions_responses.present?
       flash[:error] = "A response is required for the special question."
       redirect_to survey_course_path
       return
@@ -175,7 +175,7 @@ class CoursesController < ApplicationController
     end
 
     def force_immutability_survey_response
-      if @membership.special_question_response.present?
+      if @membership.special_questions_responses.present?
         flash[:error] = "You have already responded to the special survey question for this course. Your response cannot be changed."
         redirect_to courses_path
       end
@@ -183,6 +183,6 @@ class CoursesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def course_params
-      params.require(:course).permit(:title, :description, :video_url, :minimum_score, :certificate_token, :question_json, :cost, :minimum_time_spent, :special_question, :special_question_response, youtube_video_ids_attributes: [:id, :video_id, :_destroy], course_general_attachments_attributes: [:id, :document, :description, :_destroy], video_uploads_attributes: [:id, :hosted_url, :_destroy])
+      params.require(:course).permit(:title, :description, :video_url, :minimum_score, :certificate_token, :question_json, :cost, :minimum_time_spent, :special_questions, youtube_video_ids_attributes: [:id, :video_id, :_destroy], course_general_attachments_attributes: [:id, :document, :description, :_destroy], video_uploads_attributes: [:id, :hosted_url, :_destroy])
     end
 end

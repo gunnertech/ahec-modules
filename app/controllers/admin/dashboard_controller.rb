@@ -129,7 +129,7 @@ class Admin::DashboardController < ApplicationController
   end
 
   def survey_responses
-    @memberships = UserMembership.where.not(special_question_response: nil)
+    @memberships = UserMembership.where.not(special_questions_responses: nil)
     @courses = Course.where(id: @memberships.map { |m| m.course.id }.compact.uniq)
 
     respond_to do |format|
@@ -143,7 +143,7 @@ class Admin::DashboardController < ApplicationController
       courses.sort_by { |m| m.title }.each do |course|
         csv << [
           course.title.to_s,
-          ("Question: " + course.special_question.to_s)
+          ("Questions: " + course.special_questions.to_s)
         ]
         csv << [
           '',
@@ -157,7 +157,7 @@ class Admin::DashboardController < ApplicationController
             '',
             membership.user.getDisplayName,
             membership.user.email,
-            membership.special_question_response
+            membership.special_questions_responses
           ]
         end
 

@@ -7,10 +7,18 @@
 
 <%= form_for @membership, :method => :post, :url => survey_course_url do |f| %>
   <hr />
+
   <div class="course-special-question-field">
-    <h3 class="text-center course-special-question"><%= @course.special_question %><h2>
-    <%= f.text_field :special_question_response, placeholder: "Your response", class: "form-control" %>
+    <div class="survey-quiz-questions">
+      <% JSON.parse(@course.special_questions).each_with_index do |question, questionIndex| %>
+        <fieldset id="survey-question-<%= questionIndex %>">
+          <legend><%= question %></legend>
+          <input class="form-control" type="text" name="survey_question[<%= questionIndex %>]"></input>
+        </fieldset>
+      <% end %>
+    </div>
   </div>
+
   <hr />
 
   <%= f.submit "Submit Response", class: "btn btn-success" %>
