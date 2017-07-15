@@ -126,7 +126,7 @@ class CoursesController < ApplicationController
   def survey_response
     responses = params["survey_question"]
 
-    responses.each { |response|
+    responses.each { |i, response|
       if not response.present?
         flash[:error] = "A response is required for the special question."
         redirect_to survey_course_path
@@ -134,7 +134,7 @@ class CoursesController < ApplicationController
       end
     }
 
-    @membership.special_questions_responses = responses
+    @membership.special_questions_responses = responses.to_json
     @membership.save!
 
     if @membership.didUserPassCourse?
@@ -175,9 +175,18 @@ class CoursesController < ApplicationController
     end
 
     def force_immutability_survey_response
+      if not @membership
+        flash[:error] = "You are not registered for that course"
+        redirect_to course_path(@course)
+
+        return 
+      end
+
       if @membership.special_questions_responses.present?
         flash[:error] = "You have already responded to the special survey question for this course. Your response cannot be changed."
         redirect_to courses_path
+
+        return
       end
     end
 

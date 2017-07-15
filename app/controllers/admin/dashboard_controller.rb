@@ -149,7 +149,7 @@ class Admin::DashboardController < ApplicationController
           '',
           'Name',
           'Email',
-          'Response'
+          'Responses'
         ]
 
         (@memberships.select { |m| m.course_id == course.id }.sort_by { |m| m.id }).each do |membership|
@@ -157,7 +157,7 @@ class Admin::DashboardController < ApplicationController
             '',
             membership.user.getDisplayName,
             membership.user.email,
-            membership.special_questions_responses
+            JSON.parse(membership.special_questions_responses).map { |response| response[1] }
           ]
         end
 

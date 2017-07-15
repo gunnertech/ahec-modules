@@ -22,7 +22,7 @@
         <tr>
           <td><%= membership.user.getDisplayName %></td>
           <td><%= membership.user.email %></td>
-          <td><%= membership.special_questions_responses %></td>
+          <td><%= JSON.parse(membership.special_questions_responses).map { |response| response[1] } %></td>
         </tr>
       <% end %>
     </tbody>
