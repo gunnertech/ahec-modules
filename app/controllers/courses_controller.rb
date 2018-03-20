@@ -100,11 +100,11 @@ class CoursesController < ApplicationController
       @membership.save!
 
       if totalCorrect == 0
-        flash[:notice] = "You answered no questions correctly"
+        flash[:notice] = "You answered no questions correctly - " + score.to_s + "%"
       elsif totalCorrect == 1
-        flash[:notice] = "You answered a question correctly"
+        flash[:notice] = "You answered a question correctly - " + score.to_s + "%"
       else
-        flash[:notice] = "You answered " + totalCorrect.to_s + " questions correctly"
+        flash[:notice] = "You answered " + totalCorrect.to_s + " questions correctly - " + score.to_s + "%"
       end
 
       redirect_to course_path(@course)
