@@ -116,6 +116,7 @@ class CoursesController < ApplicationController
 
   # GET /courses/1/quiz/results
   def results
+    @membership = current_user.getMembershipFor(@course)
   end
 
   # GET /courses/1/survey
