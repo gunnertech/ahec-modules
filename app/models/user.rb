@@ -54,7 +54,7 @@ class User < ActiveRecord::Base
       return false
     end
 
-    if not membership.pretest_grade
+    if membership.pretest_grade == nil
       return false
     end
 

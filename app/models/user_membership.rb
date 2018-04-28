@@ -28,7 +28,7 @@ class UserMembership < ActiveRecord::Base
   end
 
   def didUserPassCourse?
-    return self.course_grade >= self.course.minimum_score
+    return ((self.course_grade >= self.course.minimum_score) && (self.course_attempts > 0))
   end
 
   def get_completion_time
