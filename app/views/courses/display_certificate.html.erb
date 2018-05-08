@@ -19,6 +19,12 @@
         height: 0;
       }
 
+      .page-break {
+        display: block;
+        clear: both;
+        page-break-after: always;
+      }
+
       .text-container {
         position: absolute;
         text-align: center;
@@ -42,14 +48,14 @@
       }
 
       .course-id {
-        position: absolute;
+        /* position: absolute;
         left: 12%;
 
         <% if params[:format] == 'pdf' %>
           bottom: 16%;
         <% else %>
           bottom: 13%;
-        <% end %>
+        <% end %> */
       }
 
       .certificate-id {
@@ -102,8 +108,11 @@
         <h3>&quot;<%= @course.title %>&quot;</h3>
       </span>
 
-      <span class="course-id">Course Token: <%= @course.certificate_token %></span>
       <span class="certificate-id">Certificate #: <%= @membership.id %></span>
+
+      <div class="page-break"></div>
+
+      <span class="course-id"><%= @course.certificate_token.html_safe %></span>
     </div>
   </body>
 </html>
