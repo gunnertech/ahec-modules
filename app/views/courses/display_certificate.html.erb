@@ -48,14 +48,17 @@
       }
 
       .course-id {
-        /* position: absolute;
-        left: 12%;
+        position: absolute;
+        text-align: left;
+        left: 16%;
+        right: 16%;
+        /* margin: 0 auto; */
 
         <% if params[:format] == 'pdf' %>
-          bottom: 16%;
+          top: 55%;
         <% else %>
-          bottom: 13%;
-        <% end %> */
+          top: 55%;
+        <% end %>
       }
 
       .certificate-id {
@@ -109,8 +112,6 @@
       </span>
 
       <span class="certificate-id">Certificate #: <%= @membership.id %></span>
-
-      <div class="page-break"></div>
 
       <span class="course-id"><%= @course.certificate_token.html_safe %></span>
     </div>
