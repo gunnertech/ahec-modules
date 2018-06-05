@@ -4,7 +4,7 @@
       body {
         <% if params[:format] == 'pdf' %>
           background-image: url('file://<%= Rails.root.join('app/assets/images/certificate-bg.jpg') %>');
-          font-size: 90%;
+          font-size: 70%;
           padding-bottom: 67%;
           background-size: 100% 100%;
         <% else %>
@@ -40,7 +40,7 @@
       }
 
       .text {
-        font-size: 1.25em;
+        font-size: 1em;
         position: absolute;
         left: 0;
         right: 0;
@@ -77,18 +77,18 @@
       }
 
       h1 {
-        font-size: 4em;
+        font-size: 3em;
       }
       
       h2 {
-        font-size: 2.25em;
+        font-size: 2em;
       }
 
       h3 {
         width: 75%;
         padding-top: 15px;
         margin: 0 auto;
-        font-size: 1.5em;
+        font-size: 1em;
       }
     </style>
   </head>
