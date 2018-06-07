@@ -61,6 +61,10 @@
         <% end %>
       }
 
+      .address {
+        text-align: center;
+      }
+
       .certificate-id {
         position: absolute;
         right: 13%;
@@ -116,7 +120,7 @@
       <span class="course-id">
         <%= @course.certificate_token.html_safe %>
         <br />
-        <span style="text-align: 'center'">
+        <span class="address">
           Area L Area Health Education Center - 1631 South Wesleyan Blvd, Rocky Mount, North Carolina 27803 - (252) 972-6958
         </span>
       </span>
