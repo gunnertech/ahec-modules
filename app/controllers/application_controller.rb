@@ -17,6 +17,8 @@ class ApplicationController < ActionController::Base
     end
 
     def authorize_user
+      raise request.fullpath
+      store_location_for(:user, request.fullpath)
       redirect_to new_user_session_url, alert: 'Access Denied' unless (current_user)
     end
 
